@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  price       Float
+  category    String
+  description String?
+  imageUrl    String?
+  isAvailable Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+}
+
+enum Role {
+  OWNER // Propriétaire
+  MANAGER // Gérant
+  CLIENT // Client
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  name           String?
+  role           Role     @default(CLIENT)   // 🔴 IMPORTANT : type = Role (enum), PAS String
+  passwordHash   String?                     // optionnel = pas de blocage migration
+
+  phone          String?                     // nouveau champ
+  marketingOptIn Boolean  @default(false)    // nouveau champ
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  managedOrders  Order[]  @relation("ManagerOrders")
+}
+
+
+
+
+enum OrderStatus {
+  PENDING // En attente / prise de commande
+  PREPARATION // En préparation
+  READY // Prête
+  DELIVERED // Livrée / terminée
+  CANCELED // Annulée
+}
+
+enum PaymentMethod {
+  CASH // Espèces
+  CARD // Carte bancaire
+  MOBILE // Paiement mobile
+  OTHER // Autre
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  status        OrderStatus   @default(PENDING)
+  total         Float
+  paymentMethod PaymentMethod
+
+  ticketNumber  String?
+  customerName  String?
+  customerNote  String?
+
+  manager       User?   @relation("ManagerOrders", fields: [managerId], references: [id])
+  managerId     String?
+
+  items         OrderItem[]
+}
+
+
+
+
+model OrderItem {
+  id        String @id @default(cuid())
+  quantity  Int
+  unitPrice Float
+
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId String
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
