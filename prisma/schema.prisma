@@ -18,6 +18,9 @@ model Product {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   orderItems  OrderItem[]
+
+    favorites        Favorite[]
+
 }
 
 enum Role {
@@ -30,17 +33,23 @@ model User {
   id             String   @id @default(cuid())
   email          String   @unique
   name           String?
-  role           Role     @default(CLIENT)   // 🔴 IMPORTANT : type = Role (enum), PAS String
-  passwordHash   String?                     // optionnel = pas de blocage migration
+  role           Role     @default(CLIENT)
+  passwordHash   String?
 
-  phone          String?                     // nouveau champ
-  marketingOptIn Boolean  @default(false)    // nouveau champ
+  phone          String?
+  marketingOptIn Boolean  @default(false)
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   managedOrders  Order[]  @relation("ManagerOrders")
+
+  passwordResetTokens PasswordResetToken[] @relation("UserPasswordResetTokens")
+
+    favorites        Favorite[]
+
 }
+
 
 
 
@@ -96,9 +105,23 @@ model OrderItem {
 model PasswordResetToken {
   id        String   @id @default(cuid())
   token     String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation("UserPasswordResetTokens", fields: [userId], references: [id])
   userId    String
   expiresAt DateTime
   createdAt DateTime @default(now())
 }
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
 

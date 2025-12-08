@@ -10,6 +10,7 @@ type Product = {
   category: string;
   description: string | null;
   imageUrl: string | null;
+  isAvailable: boolean;
 };
 
 async function getAvailableProducts(): Promise<Product[]> {

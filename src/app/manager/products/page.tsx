@@ -1,18 +1,12 @@
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getAuthSession } from "@/lib/authSession";
-import { redirect } from "next/navigation";
 import ManagerLayout from "@/components/layout/ManagerLayout";
-import ManagerProductsAvailabilityPage from "./ManagerProductsAvailabilityPage";
+import ProductsManagementPage, {
+  Product,
+} from "@/app/products/ProductsManagementPage";
 
-async function getAllProducts() {
-  return prisma.product.findMany({
-    orderBy: {
-      category: "asc",
-    },
-  });
-}
-
-export default async function ManagerProductsPageRoute() {
+export default async function ManagerProductsPage() {
   const session = await getAuthSession();
 
   if (!session || !session.user) {
@@ -26,14 +20,27 @@ export default async function ManagerProductsPageRoute() {
     redirect("/");
   }
 
-  const products = await getAllProducts();
+  const currentUser = session.user as any;
+
+  // 🔹 On charge les produits côté serveur
+  const productsFromDb = await prisma.product.findMany({
+    orderBy: [{ category: "asc" }, { name: "asc" }],
+  });
+
+  // 🔹 On les cast dans le type Product attendu par le composant client
+  const initialProducts: Product[] = productsFromDb.map((p) => ({
+    id: p.id,
+    name: p.name,
+    price: p.price,
+    category: p.category,
+    description: p.description,
+    imageUrl: p.imageUrl,
+    isAvailable: p.isAvailable,
+  }));
 
   return (
-    <ManagerLayout currentRole={role}>
-      <ManagerProductsAvailabilityPage
-        initialProducts={products}
-        currentRole={role}
-      />
+    <ManagerLayout currentUser={currentUser} currentRole={role}>
+      <ProductsManagementPage initialProducts={initialProducts} />
     </ManagerLayout>
   );
 }

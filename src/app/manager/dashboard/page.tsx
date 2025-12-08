@@ -13,6 +13,12 @@ type OrdersStats = {
   totalAmount: number;
 };
 
+type ProductsStats = {
+  totalProducts: number;
+  activeProducts: number;
+  inactiveProducts: number;
+};
+
 async function getTodayOrdersStats(): Promise<OrdersStats> {
   const start = new Date();
   start.setHours(0, 0, 0, 0);
@@ -71,6 +77,20 @@ async function getTodayOrdersStats(): Promise<OrdersStats> {
   };
 }
 
+async function getProductsStats(): Promise<ProductsStats> {
+  const [totalProducts, activeProducts, inactiveProducts] = await Promise.all([
+    prisma.product.count(),
+    prisma.product.count({ where: { isAvailable: true } }),
+    prisma.product.count({ where: { isAvailable: false } }),
+  ]);
+
+  return {
+    totalProducts,
+    activeProducts,
+    inactiveProducts,
+  };
+}
+
 export default async function ManagerDashboardPage() {
   const session = await getAuthSession();
 
@@ -85,21 +105,34 @@ export default async function ManagerDashboardPage() {
     redirect("/");
   }
 
-  const stats = await getTodayOrdersStats();
+  const currentUser = session.user as any;
+  const [stats, productsStats] = await Promise.all([
+    getTodayOrdersStats(),
+    getProductsStats(),
+  ]);
 
   return (
-    <ManagerLayout currentRole={role}>
+    <ManagerLayout currentUser={currentUser} currentRole={role}>
       {/* Header de page */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Tableau de bord – Gérant
-        </h1>
-        <p className="text-sm text-slate-500">
-          Vue d&apos;ensemble des commandes du jour.
-        </p>
+      <div className="mb-6 flex items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold text-slate-900">
+            Tableau de bord – Gérant
+          </h1>
+          <p className="text-sm text-slate-500">
+            Vue d&apos;ensemble des commandes et du catalogue pour aujourd&apos;hui.
+          </p>
+        </div>
+
+        <Link
+          href="/manager/products"
+          className="rounded-full bg-slate-900 px-4 py-1.5 text-xs font-semibold text-white hover:bg-slate-800"
+        >
+          Gérer les produits
+        </Link>
       </div>
 
-      {/* Stat cards */}
+      {/* Stat cards : commandes */}
       <section className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Commandes du jour"
@@ -114,7 +147,7 @@ export default async function ManagerDashboardPage() {
         <StatCard
           title="Prêtes"
           value={stats.readyCount}
-          subtitle="En attente de remise au client"
+          subtitle="En attente de retrait"
         />
         <StatCard
           title="Livrées"
@@ -125,59 +158,60 @@ export default async function ManagerDashboardPage() {
 
       {/* Résumé + cartes de navigation */}
       <section className="grid gap-4 lg:grid-cols-3">
-        {/* Résumé */}
+        {/* Résumé commandes + produits */}
         <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 lg:col-span-2">
           <h2 className="text-sm font-semibold text-slate-900">
-            Résumé des commandes du jour
+            Résumé opérationnel du jour
           </h2>
           <p className="mt-1 text-xs text-slate-500">
-            Ces chiffres sont basés sur les commandes enregistrées aujourd&apos;hui
-            dans le système Blé Dor.
+            Indicateurs basés sur les commandes et le catalogue en temps réel.
           </p>
 
-          <dl className="mt-4 grid gap-3 text-sm text-slate-700 sm:grid-cols-2 md:grid-cols-3">
+          <div className="mt-4 grid gap-3 text-sm text-slate-700 sm:grid-cols-2 md:grid-cols-3">
             <div className="rounded-xl bg-slate-50 p-3">
-              <dt className="text-xs text-slate-500">Commandes en attente</dt>
-              <dd className="text-base font-semibold">
+              <p className="text-xs text-slate-500">Commandes en attente</p>
+              <p className="mt-1 text-base font-semibold">
                 {stats.pendingCount}
-              </dd>
+              </p>
             </div>
             <div className="rounded-xl bg-slate-50 p-3">
-              <dt className="text-xs text-slate-500">Total encaissé (jour)</dt>
-              <dd className="text-base font-semibold">
+              <p className="text-xs text-slate-500">Total encaissé (jour)</p>
+              <p className="mt-1 text-base font-semibold">
                 {stats.totalAmount.toFixed(2)} €
-              </dd>
+              </p>
             </div>
             <div className="rounded-xl bg-slate-50 p-3">
-              <dt className="text-xs text-slate-500">
-                Commandes terminées (livrées)
-              </dt>
-              <dd className="text-base font-semibold">
-                {stats.deliveredCount}
-              </dd>
+              <p className="text-xs text-slate-500">Produits au catalogue</p>
+              <p className="mt-1 text-base font-semibold">
+                {productsStats.totalProducts}
+              </p>
+              <p className="mt-1 text-[11px] text-slate-500">
+                {productsStats.activeProducts} actifs ·{" "}
+                {productsStats.inactiveProducts} en rupture
+              </p>
             </div>
-          </dl>
+          </div>
         </div>
 
-        {/* Navigation cards */}
+        {/* Navigation / actions manager */}
         <div className="space-y-3">
           <NavCard
             title="Commandes du jour"
-            description="Consulter et gérer les commandes (statut, préparation, livraison)."
+            description="Consulter et gérer les commandes (statut, préparation, retrait)."
             href="/manager/orders"
             actionLabel="Voir les commandes"
           />
           <NavCard
             title="Disponibilité produits"
-            description="Activer ou désactiver les produits en fonction des stocks."
+            description="Activer ou désactiver les produits selon les stocks."
             href="/manager/products"
             actionLabel="Gérer les disponibilités"
           />
           <NavCard
             title="Catalogue produits"
-            description="Ajouter, modifier ou supprimer des produits (via l'écran Produits)."
-            href="/products"
-            actionLabel="Ouvrir les produits"
+            description="Ajouter un nouveau produit, ajuster les prix ou supprimer une référence."
+            href="/manager/products"
+            actionLabel="Ouvrir le catalogue"
           />
         </div>
       </section>
@@ -197,9 +231,7 @@ function StatCard({ title, value, subtitle }: StatCardProps) {
       <h2 className="text-xs font-medium text-slate-500">{title}</h2>
       <p className="mt-2 text-2xl font-semibold text-slate-900">{value}</p>
       {subtitle && (
-        <p className="mt-1 text-[11px] text-slate-500">
-          {subtitle}
-        </p>
+        <p className="mt-1 text-[11px] text-slate-500">{subtitle}</p>
       )}
     </article>
   );
