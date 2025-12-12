@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { getAuthSession } from "@/lib/authSession";
 import { redirect } from "next/navigation";
-import ManagerLayout from "@/components/layout/ManagerLayout";
+import OwnerLayout from "@/components/layout/OwnerLayout";
+import Link from "next/link";
 
 type PeriodStats = {
   totalSales: number;
@@ -24,6 +25,18 @@ type TopProduct = {
   category: string | null;
 };
 
+type ManagerInfo = {
+  id: string;
+  name: string | null;
+  email: string;
+  createdAt: Date;
+};
+
+type ManagersSummary = {
+  totalManagers: number;
+  latestManagers: ManagerInfo[];
+};
+
 // 🔹 Période d'aujourd'hui
 function getTodayRange() {
   const start = new Date();
@@ -39,7 +52,7 @@ function getTodayRange() {
 function getCurrentWeekRange() {
   const now = new Date();
   const day = now.getDay(); // 0 = dimanche, 1 = lundi, ...
-  const diffToMonday = (day + 6) % 7; // nb de jours à retirer pour retomber sur lundi
+  const diffToMonday = (day + 6) % 7;
 
   const start = new Date(now);
   start.setDate(now.getDate() - diffToMonday);
@@ -64,12 +77,10 @@ async function getPeriodStats(range: { start: Date; end: Date }): Promise<Period
           lte: end,
         },
         status: {
-          in: ["READY", "DELIVERED"], // on considère ces commandes comme "valides"
+          in: ["READY", "DELIVERED"],
         },
       },
-      select: {
-        total: true,
-      },
+      select: { total: true },
     }),
     prisma.order.count({
       where: {
@@ -157,12 +168,34 @@ async function getTopProductsLast7Days(): Promise<TopProduct[]> {
   }
 
   const list = Array.from(map.values());
-
-  // On trie par CA décroissant
   list.sort((a, b) => b.revenue - a.revenue);
 
-  // On garde les 5 premiers
   return list.slice(0, 5);
+}
+
+// 🔹 Résumé des managers
+async function getManagersSummary(): Promise<ManagersSummary> {
+  const [totalManagers, latestManagers] = await Promise.all([
+    prisma.user.count({
+      where: { role: "MANAGER" },
+    }),
+    prisma.user.findMany({
+      where: { role: "MANAGER" },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+      },
+    }),
+  ]);
+
+  return {
+    totalManagers,
+    latestManagers,
+  };
 }
 
 export default async function OwnerDashboardPage() {
@@ -175,24 +208,24 @@ export default async function OwnerDashboardPage() {
   const user = session.user as any;
   const role = user.role as string;
 
-  // 🔐 Seul le propriétaire a accès ici
   if (role !== "OWNER") {
-    // Si tu veux, tu peux rediriger vers /manager/dashboard pour un manager
     redirect("/");
   }
 
   const todayRange = getTodayRange();
   const weekRange = getCurrentWeekRange();
 
-  const [todayStats, weekStats, productsSummary, topProducts] = await Promise.all([
-    getPeriodStats(todayRange),
-    getPeriodStats(weekRange),
-    getProductsSummary(),
-    getTopProductsLast7Days(),
-  ]);
+  const [todayStats, weekStats, productsSummary, topProducts, managersSummary] =
+    await Promise.all([
+      getPeriodStats(todayRange),
+      getPeriodStats(weekRange),
+      getProductsSummary(),
+      getTopProductsLast7Days(),
+      getManagersSummary(),
+    ]);
 
   return (
-    <ManagerLayout currentUser={user} currentRole={role}>
+    <OwnerLayout currentUser={user} currentRole={role}>
       {/* HEADER */}
       <header className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -204,7 +237,7 @@ export default async function OwnerDashboardPage() {
           </p>
         </div>
         <p className="text-[11px] text-slate-400">
-          Période semaine : du{" "}
+          Semaine en cours : du{" "}
           {weekRange.start.toLocaleDateString("fr-FR")} au{" "}
           {weekRange.end.toLocaleDateString("fr-FR")}
         </p>
@@ -243,7 +276,7 @@ export default async function OwnerDashboardPage() {
         </div>
       </section>
 
-      {/* STATS SEMAINE + PRODUITS */}
+      {/* STATS SEMAINE + PRODUITS + MANAGERS */}
       <section className="mb-6 grid gap-4 lg:grid-cols-3">
         {/* Semaine */}
         <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 lg:col-span-2">
@@ -312,6 +345,76 @@ export default async function OwnerDashboardPage() {
         </div>
       </section>
 
+      {/* MANAGERS */}
+      <section className="mb-6 grid gap-4 lg:grid-cols-3">
+        <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 lg:col-span-1">
+          <h2 className="text-sm font-semibold text-slate-900">
+            Équipe & managers
+          </h2>
+          <p className="mt-1 text-xs text-slate-500">
+            Vue rapide sur les comptes gérants.
+          </p>
+
+          <div className="mt-4 rounded-xl bg-slate-50 px-3 py-2 text-sm">
+            <p className="text-xs text-slate-500">Nombre de managers</p>
+            <p className="mt-1 text-base font-semibold">
+              {managersSummary.totalManagers}
+            </p>
+          </div>
+
+          <p className="mt-3 text-[11px] text-slate-500">
+            Pour gérer les comptes, créer un nouveau gérant ou supprimer un
+            accès :
+          </p>
+
+          <Link
+            href="/owner/managers"
+            className="mt-3 inline-flex items-center rounded-full bg-slate-900 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-slate-800"
+          >
+            Gérer les managers
+          </Link>
+        </div>
+
+        <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 lg:col-span-2">
+          <h3 className="text-sm font-semibold text-slate-900">
+            Derniers managers ajoutés
+          </h3>
+          <p className="mt-1 text-xs text-slate-500">
+            Historique des comptes gérants créés récemment.
+          </p>
+
+          {managersSummary.latestManagers.length === 0 ? (
+            <p className="mt-4 text-sm text-slate-500">
+              Aucun manager n&apos;a encore été créé.
+            </p>
+          ) : (
+            <ul className="mt-4 space-y-2 text-sm">
+              {managersSummary.latestManagers.map((m) => (
+                <li
+                  key={m.id}
+                  className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2"
+                >
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">
+                      {m.name || "Manager sans nom"}
+                    </p>
+                    <p className="text-[11px] text-slate-500">{m.email}</p>
+                  </div>
+                  <p className="text-[11px] text-slate-500">
+                    Créé le{" "}
+                    {m.createdAt.toLocaleDateString("fr-FR", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "2-digit",
+                    })}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+
       {/* TOP PRODUITS */}
       <section className="mb-8 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100">
         <h2 className="text-sm font-semibold text-slate-900">
@@ -354,7 +457,7 @@ export default async function OwnerDashboardPage() {
           </div>
         )}
       </section>
-    </ManagerLayout>
+    </OwnerLayout>
   );
 }
 
