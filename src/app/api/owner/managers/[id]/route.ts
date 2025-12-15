@@ -55,7 +55,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     }
 
     if (password && password.length > 0) {
-      if (password.length < 6) {
+      if (password.length < 5) {
         return NextResponse.json(
           { error: "Le mot de passe doit contenir au moins 6 caractères." },
           { status: 400 }
