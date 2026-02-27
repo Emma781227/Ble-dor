@@ -2,11 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAuthSession } from "@/lib/authSession";
 
-type RouteParams = {
-  params: { productId: string };
-};
-
-export async function DELETE(_req: NextRequest, { params }: RouteParams) {
+export async function DELETE(
+  _req: NextRequest,
+  context: { params: Promise<{ productId: string }> }
+) {
   const session = await getAuthSession();
 
   if (!session || !session.user) {
@@ -14,7 +13,16 @@ export async function DELETE(_req: NextRequest, { params }: RouteParams) {
   }
 
   const user = session.user as any;
-  const productId = params.productId;
+
+  // ✅ En Next.js 16, params est une Promise
+  const { productId } = await context.params;
+
+  if (!productId) {
+    return NextResponse.json(
+      { error: "productId manquant" },
+      { status: 400 }
+    );
+  }
 
   try {
     await prisma.favorite.deleteMany({
