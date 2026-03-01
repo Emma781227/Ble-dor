@@ -209,38 +209,17 @@ export default async function ClientDashboardPage() {
                 <tbody className="divide-y divide-slate-100 bg-white">
                   {lastOrders.map((order) => {
                     const statusInfo = formatStatus(order.status);
-                    const itemsCount = order.items.reduce(
-                      (sum, item) => sum + item.quantity,
-                      0
-                    );
+                    const itemsCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
                     return (
-                      <tr key={order.id} className="hover:bg-slate-50/60">
-                        <td className="px-3 py-2 text-xs text-slate-900">
-                          {order.ticketNumber || order.id.slice(0, 8)}
-                        </td>
-                        <td className="px-3 py-2 text-xs text-slate-600">
-                          {new Date(order.createdAt).toLocaleDateString(
-                            "fr-FR",
-                            {
-                              day: "2-digit",
-                              month: "short",
-                            }
-                          )}
-                        </td>
+                      <tr key={order.id} className={`hover:bg-slate-50/60 border-l-4 ${statusInfo.borderClass}`}>
+                        <td className="px-3 py-2 text-xs text-slate-900">{order.ticketNumber || order.id.slice(0, 8)}</td>
+                        <td className="px-3 py-2 text-xs text-slate-600">{new Date(order.createdAt).toLocaleDateString("fr-FR", { day: "2-digit", month: "short" })}</td>
                         <td className="px-3 py-2 text-xs">
-                          <span
-                            className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ring-1 ${statusInfo.className}`}
-                          >
-                            {statusInfo.label}
-                          </span>
+                          <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ring-1 ${statusInfo.className}`}>{statusInfo.label}</span>
                         </td>
-                        <td className="px-3 py-2 text-right text-xs text-slate-700">
-                          {itemsCount}
-                        </td>
-                        <td className="px-3 py-2 text-right text-xs font-semibold text-slate-900">
-                          {order.total.toFixed(2)} FCFA
-                        </td>
+                        <td className="px-3 py-2 text-right text-xs text-slate-700">{itemsCount}</td>
+                        <td className="px-3 py-2 text-right text-xs font-semibold text-slate-900">{order.total.toLocaleString("fr-FR")} FCFA</td>
                       </tr>
                     );
                   })}

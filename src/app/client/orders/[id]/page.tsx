@@ -18,9 +18,12 @@ export default async function OrderDetailPage({
 
   const orderId = params.id;
 
-  // Récupération de la commande
-  const order = await prisma.order.findUnique({
-    where: { id: orderId },
+  // Récupération de la commande, limitée à l'utilisateur connecté
+  const order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+      clientId: user.id,
+    },
     include: {
       items: {
         include: {

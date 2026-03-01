@@ -44,6 +44,8 @@ model User {
 
   managedOrders  Order[]  @relation("ManagerOrders")
 
+  clientOrders   Order[]  @relation("ClientOrders")
+
   passwordResetTokens PasswordResetToken[] @relation("UserPasswordResetTokens")
 
     favorites        Favorite[]
@@ -83,6 +85,9 @@ model Order {
 
   manager       User?   @relation("ManagerOrders", fields: [managerId], references: [id])
   managerId     String?
+
+  client        User?   @relation("ClientOrders", fields: [clientId], references: [id])
+  clientId      String?
 
   items         OrderItem[]
 }

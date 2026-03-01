@@ -292,7 +292,7 @@ export default function ManagerCashRegisterPage({
                     {item.product.name}
                   </p>
                   <p className="text-xs text-slate-500">
-                    {item.product.price.toFixed(2)} € / unité
+                    {item.product.price.toFixed(2)} FcFa / unité
                   </p>
                 </div>
 

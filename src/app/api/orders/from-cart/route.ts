@@ -83,11 +83,11 @@ export async function POST(req: NextRequest) {
         ticketNumber,
         customerName,
         customerNote: customerNote || null,
+        client: { connect: { id: user.id } },
         items: {
           create: orderItemsData,
         },
-        // on peut stocker l'user si tu as userId dans Order
-        // customerId: user.id,
+        // managerId stays optional
       },
     });
 

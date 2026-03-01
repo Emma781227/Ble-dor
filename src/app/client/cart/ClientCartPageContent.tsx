@@ -23,6 +23,56 @@ export default function ClientCartPageContent({
     addItem({ ...item, quantity: 1 });
   };
 
+  const setItemQuantity = (id: string, qty: number) => {
+    const item = items.find((i) => i.id === id);
+    if (!item) return;
+
+    if (qty <= 0) {
+      removeItem(id);
+      return;
+    }
+
+    // Remove existing entry then add with the new quantity to set exact value
+    removeItem(id);
+    addItem({ ...item, quantity: qty });
+  };
+
+  function QuantityInput({ item }: { item: any }) {
+    const [localQty, setLocalQty] = useState(item.quantity.toString());
+
+    const commit = () => {
+      const parsed = parseInt(localQty || "0", 10) || 0;
+      if (parsed === item.quantity) return;
+      setItemQuantity(item.id, parsed);
+    };
+
+    return (
+      <div className="flex items-center gap-2">
+        <input
+          type="number"
+          min={0}
+          step={1}
+          value={localQty}
+          onChange={(e) => setLocalQty(e.target.value)}
+          onBlur={commit}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") commit();
+          }}
+          className="w-20 rounded-md border border-slate-200 px-2 py-1 text-center text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200"
+          aria-label={`Quantité pour ${item.name}`}
+        />
+        <button
+          type="button"
+          onClick={() => setItemQuantity(item.id, item.quantity + 10)}
+          className="rounded-md bg-slate-100 px-2 py-1 text-xs text-slate-700 hover:bg-slate-200"
+          title="Ajouter 10"
+        >
+          +10
+        </button>
+      </div>
+    );
+  }
+
   const handleSubmitOrder = async () => {
     try {
       setErrorMsg(null);
@@ -111,37 +161,19 @@ export default function ClientCartPageContent({
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1 rounded-full border border-slate-200 px-2 py-1">
+                    <div className="flex items-center gap-2">
+                      <QuantityInput item={item} />
+                      <p className="w-20 text-right text-xs font-semibold text-slate-900">
+                        {(item.quantity * item.price).toFixed(2)} FCFA
+                      </p>
                       <button
                         type="button"
-                        onClick={() => decreaseQty(item.id)}
-                        className="px-1 text-xs text-slate-700 hover:text-slate-900"
+                        onClick={() => removeItem(item.id)}
+                        className="text-[11px] text-red-500 hover:underline"
                       >
-                        −
-                      </button>
-                      <span className="w-6 text-center text-xs">
-                        {item.quantity}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleIncreaseQty(item.id)}
-                        className="px-1 text-xs text-slate-700 hover:text-slate-900"
-                      >
-                        +
+                        Retirer
                       </button>
                     </div>
-                    <p className="w-16 text-right text-xs font-semibold text-slate-900">
-                      {(item.quantity * item.price).toFixed(2)} FCFA
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => removeItem(item.id)}
-                      className="text-[11px] text-red-500 hover:underline"
-                    >
-                      Retirer
-                    </button>
-                  </div>
                 </div>
               ))}
             </div>

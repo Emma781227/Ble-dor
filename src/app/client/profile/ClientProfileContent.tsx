@@ -113,165 +113,153 @@ export default function ClientProfileContent({
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-xl font-semibold text-slate-900">
-          Mon profil
-        </h1>
-        <p className="text-sm text-slate-600">
-          Gérez vos informations personnelles et votre mot de passe.
-        </p>
-      </header>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Carte profil */}
-        <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-          <h2 className="text-sm font-semibold text-slate-900">
-            Informations personnelles
-          </h2>
-          <p className="mt-1 text-xs text-slate-500">
-            Ces informations sont utilisées pour retrouver vos commandes.
-          </p>
-
-          <div className="mt-4 space-y-3 text-sm">
-            <div>
-              <label className="text-xs font-medium text-slate-600">
-                Nom complet
-              </label>
-              <input
-                type="text"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-medium text-slate-600">
-                Email
-              </label>
-              <input
-                type="email"
-                className="mt-1 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500"
-                value={email}
-                readOnly
-              />
-              <p className="mt-1 text-[11px] text-slate-400">
-                L&apos;email sert d&apos;identifiant de connexion (non modifiable pour le moment).
-              </p>
-            </div>
-
-            <div>
-              <label className="text-xs font-medium text-slate-600">
-                Téléphone (optionnel)
-              </label>
-              <input
-                type="text"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="Ex : 06 12 34 56 78"
-              />
-            </div>
-
-            <div className="flex items-start gap-2 pt-1">
-              <input
-                id="marketingOptIn"
-                type="checkbox"
-                className="mt-[2px] h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
-                checked={marketingOptIn}
-                onChange={(e) => setMarketingOptIn(e.target.checked)}
-              />
-              <label
-                htmlFor="marketingOptIn"
-                className="text-xs text-slate-600"
-              >
-                Je souhaite recevoir des offres et actualités de Blé Dor par email.
-              </label>
-            </div>
+      <header className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-2xl font-medium text-slate-700">
+            {initialName ? initialName.split(" ").map(n=>n[0]).slice(0,2).join("") : "U"}
           </div>
+          <div>
+            <h1 className="text-xl font-semibold text-slate-900">Mon profil</h1>
+            <p className="text-sm text-slate-600">Gérez vos informations personnelles et la sécurité de votre compte.</p>
+          </div>
+        </div>
 
-          {profileMessage && (
-            <p className="mt-3 text-xs text-emerald-600">
-              {profileMessage}
-            </p>
-          )}
-
+        <div className="hidden sm:flex items-center gap-2">
           <button
             onClick={handleSaveProfile}
             disabled={isSavingProfile}
-            className="mt-4 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
+            className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-60"
           >
-            {isSavingProfile ? "Enregistrement..." : "Sauvegarder mes infos"}
+            {isSavingProfile ? "Enregistrement..." : "Sauvegarder"}
           </button>
+        </div>
+      </header>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+          <h2 className="text-sm font-semibold text-slate-900">Informations personnelles</h2>
+          <p className="mt-1 text-xs text-slate-500">Ces informations sont utilisées pour retrouver vos commandes.</p>
+
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 text-sm">
+            <div>
+              <label className="text-xs font-medium text-slate-600">Nom complet</label>
+              <input
+                type="text"
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                aria-label="Nom complet"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-slate-600">Email</label>
+              <input
+                type="email"
+                className="mt-1 w-full rounded-md border border-slate-100 bg-slate-50 px-3 py-2 text-sm text-slate-500"
+                value={email}
+                readOnly
+                aria-readonly
+              />
+              <p className="mt-1 text-[11px] text-slate-400">L'email est votre identifiant (non modifiable).</p>
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-slate-600">Téléphone (optionnel)</label>
+              <input
+                type="text"
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Ex : 06 12 34 56 78"
+                aria-label="Téléphone"
+              />
+            </div>
+
+            <div className="flex items-start gap-2">
+              <input
+                id="marketingOptIn"
+                type="checkbox"
+                className="mt-[3px] h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-400"
+                checked={marketingOptIn}
+                onChange={(e) => setMarketingOptIn(e.target.checked)}
+              />
+              <label htmlFor="marketingOptIn" className="text-xs text-slate-600">Je souhaite recevoir des offres et actualités par email.</label>
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between">
+            {profileMessage ? (
+              <p className="text-sm text-emerald-600" role="status" aria-live="polite">{profileMessage}</p>
+            ) : (
+              <div />
+            )}
+
+            <div className="flex items-center gap-2 sm:hidden">
+              <button
+                onClick={handleSaveProfile}
+                disabled={isSavingProfile}
+                className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-60"
+              >
+                {isSavingProfile ? "Enregistrement..." : "Sauvegarder"}
+              </button>
+            </div>
+          </div>
         </section>
 
         {/* Carte mot de passe */}
-        <section className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-          <h2 className="text-sm font-semibold text-slate-900">
-            Sécurité & mot de passe
-          </h2>
-          <p className="mt-1 text-xs text-slate-500">
-            Changez régulièrement votre mot de passe pour sécuriser votre compte.
-          </p>
+        <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+          <h2 className="text-sm font-semibold text-slate-900">Sécurité & mot de passe</h2>
+          <p className="mt-1 text-xs text-slate-500">Changez régulièrement votre mot de passe pour sécuriser votre compte.</p>
 
-          <div className="mt-4 space-y-3 text-sm">
+          <div className="mt-4 grid gap-4 text-sm">
             <div>
-              <label className="text-xs font-medium text-slate-600">
-                Mot de passe actuel
-              </label>
+              <label className="text-xs font-medium text-slate-600">Mot de passe actuel</label>
               <input
                 type="password"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
+                aria-label="Mot de passe actuel"
               />
             </div>
 
             <div>
-              <label className="text-xs font-medium text-slate-600">
-                Nouveau mot de passe
-              </label>
+              <label className="text-xs font-medium text-slate-600">Nouveau mot de passe</label>
               <input
                 type="password"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                aria-label="Nouveau mot de passe"
               />
             </div>
 
             <div>
-              <label className="text-xs font-medium text-slate-600">
-                Confirmer le nouveau mot de passe
-              </label>
+              <label className="text-xs font-medium text-slate-600">Confirmer le nouveau mot de passe</label>
               <input
                 type="password"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
+                className="mt-1 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                aria-label="Confirmer le nouveau mot de passe"
               />
             </div>
           </div>
 
-          {passwordError && (
-            <p className="mt-3 text-xs text-red-500">{passwordError}</p>
-          )}
-          {passwordMessage && !passwordError && (
-            <p className="mt-3 text-xs text-emerald-600">
-              {passwordMessage}
-            </p>
-          )}
+          {passwordError && <p className="mt-3 text-sm text-red-500">{passwordError}</p>}
+          {passwordMessage && !passwordError && <p className="mt-3 text-sm text-emerald-600">{passwordMessage}</p>}
 
-          <button
-            onClick={handleChangePassword}
-            disabled={isChangingPassword}
-            className="mt-4 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
-          >
-            {isChangingPassword ? "Mise à jour..." : "Changer mon mot de passe"}
-          </button>
-
-          <p className="mt-2 text-[11px] text-slate-400">
-            Le mot de passe doit contenir au moins 6 caractères.
-          </p>
+          <div className="mt-4 flex items-center justify-between">
+            <p className="text-[11px] text-slate-400">Le mot de passe doit contenir au moins 6 caractères.</p>
+            <button
+              onClick={handleChangePassword}
+              disabled={isChangingPassword}
+              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
+            >
+              {isChangingPassword ? "Mise à jour..." : "Changer le mot de passe"}
+            </button>
+          </div>
         </section>
       </div>
     </div>

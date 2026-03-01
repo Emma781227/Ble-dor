@@ -178,6 +178,28 @@ export default function ManagerOrdersPage({
         </div>
       </header>
 
+      {/* Summary pills */}
+      <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex items-center rounded-2xl bg-blue-50 p-4">
+          <span className="text-2xl mr-3">🧾</span>
+          <div>
+            <p className="text-xs text-slate-500">Total commandes</p>
+            <p className="text-xl font-semibold text-slate-900">
+              {orders.length}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center rounded-2xl bg-amber-50 p-4">
+          <span className="text-2xl mr-3">💰</span>
+          <div>
+            <p className="text-xs text-slate-500">Revenu total</p>
+            <p className="text-xl font-semibold text-slate-900">
+              {orders.reduce((sum, o) => sum + o.total, 0).toFixed(2)} FCFA
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Filtres */}
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <span className="text-xs font-medium text-slate-600">
@@ -215,8 +237,8 @@ export default function ManagerOrdersPage({
 
       {/* Tableau de commandes */}
       {filteredOrders.length > 0 && (
-        <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
-          <table className="min-w-full text-left text-sm">
+        <div className="overflow-x-auto rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
+          <table className="min-w-full text-left text-sm divide-y divide-slate-100">
             <thead className="bg-slate-50 text-xs font-medium text-slate-500">
               <tr>
                 <th className="px-3 py-2">Heure</th>
@@ -232,7 +254,9 @@ export default function ManagerOrdersPage({
               {filteredOrders.map((order) => (
                 <tr
                   key={order.id}
-                  className="border-t border-slate-100 text-xs text-slate-700"
+                  className={`border-t border-slate-100 text-xs text-slate-700 hover:bg-slate-50 even:bg-slate-50 ${
+                    STATUS_COLORS[order.status].split(" ")[0]
+                  } border-l-4`}
                 >
                   <td className="px-3 py-2 align-top">
                     {formatTime(order.createdAt)}
@@ -250,14 +274,14 @@ export default function ManagerOrdersPage({
                             {item.quantity}× {item.product.name}
                           </span>{" "}
                           <span className="text-[11px] text-slate-500">
-                            ({item.unitPrice.toFixed(2)} €)
+                            ({item.unitPrice.toFixed(2)} FCFA)
                           </span>
                         </li>
                       ))}
                     </ul>
                   </td>
                   <td className="px-3 py-2 align-top font-semibold">
-                    {order.total.toFixed(2)} €
+                    {order.total.toFixed(2)} FCFA
                   </td>
                   <td className="px-3 py-2 align-top capitalize">
                     {order.paymentMethod.toLowerCase()}
@@ -334,12 +358,13 @@ function FilterChip({ label, active, onClick }: FilterChipProps) {
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-3 py-1 text-[11px] font-medium ${
+      className={`flex items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-medium transition ${
         active
           ? "border-slate-900 bg-slate-900 text-white"
           : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
       }`}
     >
+      {active ? "✔" : ""}
       {label}
     </button>
   );
@@ -357,8 +382,9 @@ function StatusButton({ label, disabled, onClick }: StatusButtonProps) {
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="rounded-full border border-slate-200 px-2 py-1 text-[11px] text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+      className="flex items-center gap-1 rounded-full border border-slate-200 px-2 py-1 text-[11px] text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 transition"
     >
+      <span className="text-xs">🛠</span>
       {label}
     </button>
   );

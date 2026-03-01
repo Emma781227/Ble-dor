@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export type CartItem = {
   id: string;          // product id
@@ -22,17 +23,38 @@ const CartContext = createContext<CartContextType | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const { data: session } = useSession();
+  const userId = (session?.user as any)?.id;
+  const cartKey = userId ? `cart:${userId}` : "cart:guest";
+  const prevKeyRef = useRef<string>(cartKey);
 
-  // Charger depuis localStorage
+  // load from current key
   useEffect(() => {
-    const saved = localStorage.getItem("cart");
+    const saved = localStorage.getItem(cartKey);
     if (saved) setItems(JSON.parse(saved));
-  }, []);
+    else setItems([]);
+  }, [cartKey]);
 
-  // Sauvegarder dans localStorage
+  // migrate when key changes (login/logout)
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(items));
-  }, [items]);
+    const prevKey = prevKeyRef.current;
+    if (prevKey !== cartKey) {
+      const prevData = localStorage.getItem(prevKey);
+      if (prevData) {
+        if (!localStorage.getItem(cartKey)) {
+          localStorage.setItem(cartKey, prevData);
+          setItems(JSON.parse(prevData));
+        }
+        localStorage.removeItem(prevKey);
+      }
+    }
+    prevKeyRef.current = cartKey;
+  }, [cartKey]);
+
+  // persist whenever items or key change
+  useEffect(() => {
+    localStorage.setItem(cartKey, JSON.stringify(items));
+  }, [items, cartKey]);
 
   const addItem = (item: CartItem) => {
     setItems((prev) => {
