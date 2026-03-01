@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getAuthSession } from "@/lib/authSession";
 import ClientLayout from "@/components/layout/ClientLayout";
 
+// simplify type to match Prisma results (will include items automatically when we ask for them)
 type DashboardOrder = {
   id: string;
   ticketNumber: string | null;
@@ -13,27 +14,26 @@ type DashboardOrder = {
   items: { quantity: number }[];
 };
 
-async function getClientDashboardData() {
-  // Pour l’instant on récupère simplement les dernières commandes globales.
-  // Si plus tard on ajoute un lien Order -> User (clientId), on filtrera ici.
-  const orders = (await prisma.order.findMany({
+async function getClientDashboardData(userId: string) {
+  // Toutes les statistiques concernent uniquement l'utilisateur courant.
+  const orders = await prisma.order.findMany({
+    where: { clientId: userId } as any,
     orderBy: { createdAt: "desc" },
     take: 5,
-    include: {
-      items: true,
-    },
-  })) as DashboardOrder[];
+    include: { items: true },
+  });
 
-  const totalOrders = await prisma.order.count();
+  const totalOrders = await prisma.order.count({ where: { clientId: userId } as any });
 
   const totalAmountAgg = await prisma.order.aggregate({
+    where: { clientId: userId } as any,
     _sum: { total: true },
   });
 
-  const totalAmount = totalAmountAgg._sum.total || 0;
+  const totalAmount = totalAmountAgg._sum?.total ?? 0;
 
   return {
-    lastOrders: orders,
+    lastOrders: orders as DashboardOrder[],
     totalOrders,
     totalAmount,
   };
@@ -42,13 +42,29 @@ async function getClientDashboardData() {
 function formatStatus(status: string) {
   switch (status) {
     case "PENDING":
-      return { label: "Enregistrée", className: "bg-amber-50 text-amber-700 ring-amber-100" };
+      return {
+        label: "Enregistrée",
+        className: "bg-amber-50 text-amber-700 ring-amber-100",
+        borderClass: "border-amber-200",
+      };
     case "PAID":
-      return { label: "Payée", className: "bg-emerald-50 text-emerald-700 ring-emerald-100" };
+      return {
+        label: "Payée",
+        className: "bg-emerald-50 text-emerald-700 ring-emerald-100",
+        borderClass: "border-emerald-200",
+      };
     case "CANCELLED":
-      return { label: "Annulée", className: "bg-red-50 text-red-600 ring-red-100" };
+      return {
+        label: "Annulée",
+        className: "bg-red-50 text-red-600 ring-red-100",
+        borderClass: "border-red-200",
+      };
     default:
-      return { label: status, className: "bg-slate-50 text-slate-600 ring-slate-200" };
+      return {
+        label: status,
+        className: "bg-slate-50 text-slate-600 ring-slate-200",
+        borderClass: "border-slate-200",
+      };
   }
 }
 
@@ -65,7 +81,7 @@ export default async function ClientDashboardPage() {
     redirect("/");
   }
 
-  const { lastOrders, totalOrders, totalAmount } = await getClientDashboardData();
+  const { lastOrders, totalOrders, totalAmount } = await getClientDashboardData(user.id);
 
   const lastOrder = lastOrders[0] ?? null;
 
