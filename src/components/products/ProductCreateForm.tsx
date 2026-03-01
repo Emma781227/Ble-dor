@@ -86,7 +86,7 @@ export default function ProductCreateForm({
 
         <div>
           <label className="text-xs font-medium text-slate-600">
-            Prix (€)
+            Prix (FCFA)
           </label>
           <input
             type="text"

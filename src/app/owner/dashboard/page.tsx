@@ -251,7 +251,7 @@ export default async function OwnerDashboardPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             title="Chiffre d'affaires (jour)"
-            value={`${todayStats.totalSales.toFixed(2)} €`}
+            value={`${todayStats.totalSales.toFixed(2)} FCFA`}
             subtitle="Commandes livrées/prêtes"
           />
           <StatCard
@@ -291,7 +291,7 @@ export default async function OwnerDashboardPage() {
             <div className="rounded-xl bg-slate-50 p-3">
               <p className="text-xs text-slate-500">CA semaine (estimé)</p>
               <p className="mt-1 text-base font-semibold">
-                {weekStats.totalSales.toFixed(2)} €
+                {weekStats.totalSales.toFixed(2)} FCFA
               </p>
             </div>
             <div className="rounded-xl bg-slate-50 p-3">
@@ -450,7 +450,7 @@ export default async function OwnerDashboardPage() {
                   </div>
                 </div>
                 <p className="text-sm font-semibold text-slate-900">
-                  {p.revenue.toFixed(2)} €
+                  {p.revenue.toFixed(2)} FCFA
                 </p>
               </div>
             ))}

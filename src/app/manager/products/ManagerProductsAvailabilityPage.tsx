@@ -136,7 +136,7 @@ export default function ManagerProductsAvailabilityPage({
                       {product.name}
                     </p>
                     <p className="text-xs text-slate-500">
-                      {product.price.toFixed(2)} € —{" "}
+                      {product.price.toFixed(2)} FCFA —{" "}
                       {product.description || "Pas de description"}
                     </p>
                   </div>

@@ -74,7 +74,7 @@ export default async function OwnerProductsPage() {
                     {p.category}
                   </td>
                   <td className="px-3 py-2 text-right font-semibold text-slate-900">
-                    {p.price.toFixed(2)} €
+                    {p.price.toFixed(2)} FCFA
                   </td>
                   <td className="px-3 py-2">
                     <span

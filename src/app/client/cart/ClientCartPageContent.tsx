@@ -107,7 +107,7 @@ export default function ClientCartPageContent({
                   <div>
                     <p className="font-medium text-slate-900">{item.name}</p>
                     <p className="text-[11px] text-slate-500">
-                      {item.price.toFixed(2)} € / unité
+                      {item.price.toFixed(2)} FCFA / unité
                     </p>
                   </div>
 
@@ -132,7 +132,7 @@ export default function ClientCartPageContent({
                       </button>
                     </div>
                     <p className="w-16 text-right text-xs font-semibold text-slate-900">
-                      {(item.quantity * item.price).toFixed(2)} €
+                      {(item.quantity * item.price).toFixed(2)} FCFA
                     </p>
                     <button
                       type="button"
@@ -186,7 +186,7 @@ export default function ClientCartPageContent({
                 Total
               </span>
               <span className="text-lg font-semibold text-slate-900">
-                {total.toFixed(2)} €
+                {total.toFixed(2)} FCFA
               </span>
             </div>
 

@@ -137,21 +137,29 @@ export default async function ManagerDashboardPage() {
         <StatCard
           title="Commandes du jour"
           value={stats.totalOrders}
+          icon="🛒"
+          color="bg-blue-50"
           subtitle="Toutes commandes confondues"
         />
         <StatCard
           title="En préparation"
           value={stats.preparationCount}
+          icon="🥖"
+          color="bg-amber-50"
           subtitle="Actuellement en cours"
         />
         <StatCard
           title="Prêtes"
           value={stats.readyCount}
+          icon="✅"
+          color="bg-green-50"
           subtitle="En attente de retrait"
         />
         <StatCard
           title="Livrées"
           value={stats.deliveredCount}
+          icon="🚚"
+          color="bg-emerald-50"
           subtitle="Terminées aujourd'hui"
         />
       </section>
@@ -168,20 +176,23 @@ export default async function ManagerDashboardPage() {
           </p>
 
           <div className="mt-4 grid gap-3 text-sm text-slate-700 sm:grid-cols-2 md:grid-cols-3">
-            <div className="rounded-xl bg-slate-50 p-3">
+            <div className="rounded-xl bg-slate-50 p-3 flex items-center justify-between">
               <p className="text-xs text-slate-500">Commandes en attente</p>
+              <span className="text-xl">⏳</span>
               <p className="mt-1 text-base font-semibold">
                 {stats.pendingCount}
               </p>
             </div>
-            <div className="rounded-xl bg-slate-50 p-3">
+            <div className="rounded-xl bg-amber-50 p-3 flex items-center justify-between">
               <p className="text-xs text-slate-500">Total encaissé (jour)</p>
+              <span className="text-xl">💰</span>
               <p className="mt-1 text-base font-semibold">
-                {stats.totalAmount.toFixed(2)} €
+                {stats.totalAmount.toFixed(2)} FCFA
               </p>
             </div>
-            <div className="rounded-xl bg-slate-50 p-3">
+            <div className="rounded-xl bg-indigo-50 p-3 flex items-center justify-between">
               <p className="text-xs text-slate-500">Produits au catalogue</p>
+              <span className="text-xl">📦</span>
               <p className="mt-1 text-base font-semibold">
                 {productsStats.totalProducts}
               </p>
@@ -223,11 +234,20 @@ type StatCardProps = {
   title: string;
   value: number;
   subtitle?: string;
+  icon?: React.ReactNode;
+  color?: string; // tailwind class for background/text
 };
 
-function StatCard({ title, value, subtitle }: StatCardProps) {
+function StatCard({ title, value, subtitle, icon, color }: StatCardProps) {
   return (
-    <article className="flex flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100">
+    <article
+      className={
+        `flex flex-col rounded-2xl p-4 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md ${
+          color ?? "bg-white"
+        }`
+      }
+    >
+      {icon && <div className="mb-2 text-2xl">{icon}</div>}
       <h2 className="text-xs font-medium text-slate-500">{title}</h2>
       <p className="mt-2 text-2xl font-semibold text-slate-900">{value}</p>
       {subtitle && (
@@ -246,7 +266,7 @@ type NavCardProps = {
 
 function NavCard({ title, description, href, actionLabel }: NavCardProps) {
   return (
-    <article className="flex flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100">
+    <article className="flex flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100 transition transform hover:scale-105 hover:shadow-md">
       <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
       <p className="mt-1 text-xs text-slate-500">{description}</p>
       <div className="mt-3">

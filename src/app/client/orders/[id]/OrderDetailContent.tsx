@@ -76,12 +76,12 @@ export default function OrderDetailContent({ order }: { order: any }) {
                   {item.product.name}
                 </p>
                 <p className="text-xs text-slate-500">
-                  {item.quantity} × {item.unitPrice.toFixed(2)} €
+                  {item.quantity} × {item.unitPrice.toFixed(2)} FCFA
                 </p>
               </div>
 
               <div className="font-semibold text-slate-900">
-                {(item.quantity * item.unitPrice).toFixed(2)} €
+                {(item.quantity * item.unitPrice).toFixed(2)} FCFA
               </div>
             </div>
           ))}
@@ -90,7 +90,7 @@ export default function OrderDetailContent({ order }: { order: any }) {
         <div className="border-t mt-4 pt-4 text-right">
           <p className="text-sm text-slate-600">Total</p>
           <p className="text-xl font-semibold text-slate-900">
-            {order.total.toFixed(2)} €
+            {order.total.toFixed(2)} FCFA
           </p>
         </div>
       </div>

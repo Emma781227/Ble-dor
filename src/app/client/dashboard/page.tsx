@@ -121,7 +121,7 @@ export default async function ClientDashboardPage() {
               Montant total estimé
             </p>
             <p className="mt-2 text-2xl font-semibold text-slate-900">
-              {totalAmount.toFixed(2)} €
+              {totalAmount.toFixed(2)} FCFA
             </p>
             <p className="mt-1 text-[11px] text-slate-400">
               Somme de toutes vos commandes (toutes périodes confondues).
@@ -142,7 +142,7 @@ export default async function ClientDashboardPage() {
                   })}
                 </p>
                 <p className="mt-1 text-sm text-slate-600">
-                  {lastOrder.total.toFixed(2)} € •{" "}
+                  {lastOrder.total.toFixed(2)} FCFA •{" "}
                   {lastOrder.items.reduce((sum, item) => sum + item.quantity, 0)}{" "}
                   article
                   {lastOrder.items.reduce((sum, item) => sum + item.quantity, 0) > 1
@@ -239,7 +239,7 @@ export default async function ClientDashboardPage() {
                           {itemsCount}
                         </td>
                         <td className="px-3 py-2 text-right text-xs font-semibold text-slate-900">
-                          {order.total.toFixed(2)} €
+                          {order.total.toFixed(2)} FCFA
                         </td>
                       </tr>
                     );

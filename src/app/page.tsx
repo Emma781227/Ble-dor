@@ -75,7 +75,7 @@ export default function HomePage() {
                   </p>
                   <div className="grid grid-cols-3 gap-2 text-[11px]">
                     <MiniStat label="Commandes" value="32" accent="success" />
-                    <MiniStat label="Ticket moyen" value="8,40 €" accent="neutral" />
+                    <MiniStat label="Ticket moyen" value="8,40 FCFA" accent="neutral" />
                     <MiniStat label="Top produit" value="Baguette tradition" accent="highlight" />
                   </div>
 

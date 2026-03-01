@@ -56,7 +56,7 @@ export default async function ClientOrdersPage() {
                       {item.quantity}× {item.product.name}
                     </span>
                     <span>
-                      {(item.quantity * item.unitPrice).toFixed(2)} €
+                      {(item.quantity * item.unitPrice).toFixed(2)} FCFA
                     </span>
                   </div>
                 ))}
@@ -64,7 +64,7 @@ export default async function ClientOrdersPage() {
 
               <div className="mt-3 flex justify-between text-sm font-semibold text-slate-900">
                 <span>Total</span>
-                <span>{order.total.toFixed(2)} €</span>
+                <span>{order.total.toFixed(2)} FCFA</span>
               </div>
             </article>
           ))
