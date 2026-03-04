@@ -225,7 +225,7 @@ export default async function OwnerDashboardPage() {
     ]);
 
   return (
-    <OwnerLayout currentUser={user} currentRole={role}>
+    <OwnerLayout currentUserName={user.name || user.email}>
       {/* HEADER */}
       <header className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -263,7 +263,7 @@ export default async function OwnerDashboardPage() {
             title="Ticket moyen"
             value={
               todayStats.totalOrders > 0
-                ? `${todayStats.avgTicket.toFixed(2)} €`
+                ? `${todayStats.avgTicket.toFixed(2)} FCFA`
                 : "–"
             }
             subtitle="CA / commande"
@@ -304,7 +304,7 @@ export default async function OwnerDashboardPage() {
               <p className="text-xs text-slate-500">Ticket moyen (semaine)</p>
               <p className="mt-1 text-base font-semibold">
                 {weekStats.totalOrders > 0
-                  ? `${weekStats.avgTicket.toFixed(2)} €`
+                  ? `${weekStats.avgTicket.toFixed(2)} FCFA`
                   : "–"}
               </p>
             </div>

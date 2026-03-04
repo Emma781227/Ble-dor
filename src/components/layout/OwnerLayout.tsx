@@ -16,11 +16,10 @@ export default function OwnerLayout({
   const pathname = usePathname();
 
   const navItems = [
-    { label: "Dashboard", href: "/owner/dashboard", icon: "\ud83d\udccb" },
-    { label: "Managers", href: "/owner/managers", icon: "\ud83d\udc68" },
-    { label: "Commandes", href: "/owner/orders", icon: "\ud83d\udef1" },
-    { label: "Produits", href: "/owner/products", icon: "\ud83c\udf9c" },
-    { label: "Paiements", href: "/owner/payments", icon: "\ud83d\udcb0" },
+    { label: "Dashboard", href: "/owner/dashboard", icon: "📊" },
+    { label: "Managers", href: "/owner/managers", icon: "👨" },
+    { label: "Commandes", href: "/owner/orders", icon: "🛒" },
+    { label: "Produits", href: "/owner/products", icon: "🥖" },
   ];
 
   return (

@@ -54,7 +54,7 @@ export default function ProductsView({ initialProducts }: ProductsViewProps) {
       </header>
 
       {/* Formulaire d'ajout */}
-      <ProductForm onCreated={refreshProducts} />
+      <ProductForm onProductCreated={refreshProducts} />
 
       {/* État de chargement */}
       {loading && (

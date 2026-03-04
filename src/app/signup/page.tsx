@@ -1,7 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 
@@ -13,10 +13,14 @@ export default function SignupPage() {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [from, setFrom] = useState("/client/dashboard");
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const from = searchParams.get("from") || "/client/dashboard";
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setFrom(params.get("from") || "/client/dashboard");
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

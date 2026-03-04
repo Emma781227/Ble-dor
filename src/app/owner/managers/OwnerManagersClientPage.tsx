@@ -163,191 +163,159 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <header>
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Gestion des managers
-        </h1>
-        <p className="text-sm text-slate-500">
-          Crée, mets à jour ou supprime les comptes gérants de Blé Dor.
-        </p>
+      <header className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-lg">👥</div>
+          <div>
+            <h1 className="text-2xl font-semibold text-slate-900">Gestion des managers</h1>
+            <p className="mt-1 text-sm text-slate-600">Crée, modifie ou supprime les comptes gérants de Blé Dor.</p>
+          </div>
+        </div>
       </header>
 
       {/* Messages système */}
       {loading && (
-        <p className="text-xs text-slate-500">
-          Traitement en cours...
-        </p>
+        <div className="rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-700 flex items-center gap-2">
+          <span>⏳</span> Traitement en cours...
+        </div>
       )}
       {errorMessage && (
-        <p className="text-xs text-red-500">
-          {errorMessage}
-        </p>
+        <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700 flex items-center gap-2">
+          <span>❌</span> {errorMessage}
+        </div>
       )}
       {successMessage && (
-        <p className="text-xs text-emerald-600">
-          {successMessage}
-        </p>
+        <div className="rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-700 flex items-center gap-2">
+          <span>✅</span> {successMessage}
+        </div>
       )}
 
       {/* Formulaire create/edit */}
-      <section className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100">
-        <div className="mb-3 flex items-center justify-between">
+      <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+        <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-semibold text-slate-900">
-              {mode === "create"
-                ? "Ajouter un nouveau manager"
-                : "Modifier un manager"}
+            <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+              <span>{mode === "create" ? "➕" : "✏️"}</span>
+              {mode === "create" ? "Ajouter un nouveau manager" : "Modifier un manager"}
             </h2>
-            <p className="mt-1 text-[11px] text-slate-500">
-              Les managers auront accès à l&apos;espace gérant (dashboard, commandes, produits).
-            </p>
+            <p className="mt-1 text-xs text-slate-500">Les managers auront accès à l'espace gérant (dashboard, commandes, produits).</p>
           </div>
           {mode === "edit" && (
             <button
               type="button"
               onClick={resetForm}
-              className="rounded-full border border-slate-200 px-3 py-1 text-[11px] font-medium text-slate-600 hover:bg-slate-50"
+              className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition"
             >
-              Annuler l&apos;édition
+              ✕ Annuler
             </button>
           )}
         </div>
 
-        <form onSubmit={handleSubmit} className="grid gap-3 text-sm sm:grid-cols-2">
-          <div className="sm:col-span-1">
-            <label className="text-xs font-medium text-slate-600">
-              Nom (optionnel)
-            </label>
+        <form onSubmit={handleSubmit} className="grid gap-4 text-sm sm:grid-cols-2">
+          <div>
+            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">👤 Nom</label>
             <input
               type="text"
               value={form.name}
               onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
+              className="mt-1.5 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200 focus:outline-none"
               placeholder="Nom et prénom du manager"
             />
           </div>
 
-          <div className="sm:col-span-1">
-            <label className="text-xs font-medium text-slate-600">
-              Email (identifiant de connexion)
-            </label>
+          <div>
+            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">📧 Email</label>
             <input
               type="email"
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               required
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
+              className="mt-1.5 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200 focus:outline-none"
               placeholder="manager@bledor.fr"
             />
           </div>
 
-          <div className="sm:col-span-1">
-            <label className="text-xs font-medium text-slate-600">
-              Téléphone (optionnel)
-            </label>
+          <div>
+            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">📱 Téléphone</label>
             <input
               type="tel"
               value={form.phone}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, phone: e.target.value }))
-              }
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
+              onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+              className="mt-1.5 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200 focus:outline-none"
               placeholder="06 12 34 56 78"
             />
           </div>
 
-          <div className="sm:col-span-1">
-            <label className="text-xs font-medium text-slate-600">
-              Mot de passe {mode === "edit" && "(laisser vide pour ne pas changer)"}
+          <div>
+            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">
+              🔐 Mot de passe
+              {mode === "edit" && <span className="text-[10px] text-slate-400">(optionnel)</span>}
             </label>
             <input
               type="password"
               value={form.password}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, password: e.target.value }))
-              }
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900"
-              placeholder={
-                mode === "create"
-                  ? "Mot de passe du compte manager"
-                  : "Nouveau mot de passe (optionnel)"
-              }
+              onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+              className="mt-1.5 w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-200 focus:outline-none"
+              placeholder={mode === "create" ? "Mot de passe du manager" : "Nouveau mot de passe (optionnel)"}
             />
-            <p className="mt-1 text-[10px] text-slate-400">
-              Minimum 6 caractères recommandé.
-            </p>
+            <p className="mt-1 text-[10px] text-slate-400">Minimum 6 caractères recommandé.</p>
           </div>
 
-          <div className="sm:col-span-2 mt-2 flex justify-end">
+          <div className="sm:col-span-2 flex justify-end pt-2">
             <button
               type="submit"
               disabled={loading}
-              className="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
+              className="rounded-lg bg-amber-500 hover:bg-amber-600 px-5 py-2 text-sm font-semibold text-white transition disabled:opacity-60"
             >
-              {mode === "create"
-                ? "Créer le manager"
-                : "Enregistrer les modifications"}
+              {mode === "create" ? "✔️ Créer le manager" : "💾 Enregistrer"}
             </button>
           </div>
         </form>
       </section>
 
       {/* Liste des managers */}
-      <section className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100">
-        <h2 className="text-sm font-semibold text-slate-900">
-          Liste des managers
-        </h2>
-        <p className="mt-1 text-[11px] text-slate-500">
-          Ces comptes ont accès à l&apos;interface de gestion Blé Dor (dashboard gérant, commandes, produits).
-        </p>
+      <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+        <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">📋 Liste des managers ({managers.length})</h2>
+        <p className="mt-1 text-xs text-slate-500">Ces comptes ont accès à l'interface de gestion Blé Dor (dashboard gérant, commandes, produits).</p>
 
         {managers.length === 0 ? (
-          <p className="mt-4 text-sm text-slate-500">
-            Aucun manager pour le moment. Crée ton premier gérant avec le formulaire ci-dessus.
-          </p>
+          <div className="mt-6 rounded-lg bg-slate-50 border border-dashed border-slate-300 px-4 py-6 text-center">
+            <p className="text-sm text-slate-500">📭 Aucun manager pour le moment. Crée ton premier gérant avec le formulaire ci-dessus.</p>
+          </div>
         ) : (
           <div className="mt-4 overflow-x-auto">
-            <table className="min-w-full border-separate border-spacing-y-1 text-xs">
-              <thead>
-                <tr className="text-left text-[11px] text-slate-500">
-                  <th className="px-3 py-2">Nom</th>
-                  <th className="px-3 py-2">Email</th>
-                  <th className="px-3 py-2">Téléphone</th>
-                  <th className="px-3 py-2">Créé le</th>
-                  <th className="px-3 py-2 text-right">Actions</th>
+            <table className="w-full text-xs">
+              <thead className="border-b border-slate-200 bg-slate-50">
+                <tr>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">👤 Nom</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">📧 Email</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">📱 Téléphone</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">📅 Créé le</th>
+                  <th className="px-4 py-3 text-right font-semibold text-slate-700">⚙️ Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-100">
                 {managers.map((m) => (
-                  <tr
-                    key={m.id}
-                    className="rounded-xl bg-slate-50 align-middle text-[11px]"
-                  >
-                    <td className="px-3 py-2 font-medium text-slate-900">
-                      {m.name || "—"}
-                    </td>
-                    <td className="px-3 py-2 text-slate-700">{m.email}</td>
-                    <td className="px-3 py-2 text-slate-700">
-                      {m.phone || "—"}
-                    </td>
-                    <td className="px-3 py-2 text-slate-500">
-                      {new Date(m.createdAt).toLocaleDateString("fr-FR")}
-                    </td>
-                    <td className="px-3 py-2">
+                  <tr key={m.id} className="hover:bg-slate-50/50 border-l-4 border-l-slate-300 transition">
+                    <td className="px-4 py-3 font-medium text-slate-900">{m.name || "—"}</td>
+                    <td className="px-4 py-3 text-slate-700">{m.email}</td>
+                    <td className="px-4 py-3 text-slate-700">{m.phone || "—"}</td>
+                    <td className="px-4 py-3 text-slate-600 text-[10px]">{new Date(m.createdAt).toLocaleDateString("fr-FR")}</td>
+                    <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           type="button"
                           onClick={() => handleEditClick(m)}
-                          className="rounded-full border border-slate-200 px-2 py-1 text-[10px] font-medium text-slate-700 hover:bg-slate-100"
+                          className="rounded-md border border-slate-200 px-3 py-1.5 text-[11px] font-medium text-slate-700 hover:bg-slate-100 transition"
                         >
-                          Modifier
+                          ✏️ Modifier
                         </button>
                         <button
                           type="button"
                           onClick={() => handleDelete(m.id)}
-                          className="rounded-full bg-rose-600 px-2 py-1 text-[10px] font-medium text-white hover:bg-rose-700"
+                          className="rounded-md bg-red-500 hover:bg-red-600 px-3 py-1.5 text-[11px] font-medium text-white transition"
                         >
-                          Supprimer
+                          🗑️ Supprimer
                         </button>
                       </div>
                     </td>

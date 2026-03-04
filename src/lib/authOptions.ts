@@ -37,6 +37,10 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Utilisateur introuvable.");
         }
 
+        if (!user.passwordHash) {
+          throw new Error("Utilisateur sans mot de passe.");
+        }
+
         const isValid = await bcrypt.compare(
           credentials.password,
           user.passwordHash

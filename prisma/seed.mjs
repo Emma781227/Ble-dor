@@ -13,7 +13,7 @@ async function main() {
     update: {},
     create: {
       name: "Propriétaire",
-      email: "owner@gmail.local",
+      email: "owner@bledor.local",
       passwordHash: passwordOwner,
       role: "OWNER",
     },

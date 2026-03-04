@@ -47,7 +47,13 @@ export default async function ManagerOrdersPageRoute() {
     redirect("/");
   }
 
-  const orders = await getTodayOrders();
+  const ordersRaw = await getTodayOrders();
+
+  // convert Date objects to ISO strings for client component
+  const orders = ordersRaw.map((o) => ({
+    ...o,
+    createdAt: o.createdAt.toISOString(),
+  }));
 
   return (
     <ManagerLayout currentRole={role}>

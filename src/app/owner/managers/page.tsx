@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getAuthSession } from "@/lib/authSession";
 import { prisma } from "@/lib/prisma";
-import ManagerLayout from "@/components/layout/ManagerLayout";
+import OwnerLayout from "@/components/layout/OwnerLayout";
 import OwnerManagersClientPage from "./OwnerManagersClientPage";
 
 export type ManagerUser = {
@@ -47,8 +47,8 @@ export default async function OwnerManagersPage() {
   }));
 
   return (
-    <ManagerLayout currentUser={user} currentRole={role}>
+    <OwnerLayout currentUserName={user.name || user.email}>
       <OwnerManagersClientPage initialManagers={initialManagers} />
-    </ManagerLayout>
+    </OwnerLayout>
   );
 }
