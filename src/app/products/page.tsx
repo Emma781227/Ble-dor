@@ -3,6 +3,9 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import ProductsListClient from "./ProductsListClient";
 
+// Skip static generation - fetch products fresh on each request
+export const dynamic = "force-dynamic";
+
 type Product = {
   id: string;
   name: string;

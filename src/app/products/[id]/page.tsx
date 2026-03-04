@@ -3,6 +3,9 @@ import PublicLayout from "@/components/layout/PublicLayout";
 import { notFound } from "next/navigation";
 import ProductDetailClient from "./ProductDetailClient";
 
+// Skip static generation - fetch product fresh on each request
+export const dynamic = "force-dynamic";
+
 // ⚠️ Ici params est une Promise, c'est le nouveau comportement
 type PageProps = {
   params: Promise<{ id: string }>;
