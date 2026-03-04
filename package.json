@@ -14,7 +14,7 @@
     "@react-navigation/native-stack": "^7.8.6",
     "bcryptjs": "^3.0.3",
     "expo": "^54.0.29",
-    "next": "16.0.1",
+    "next": "16.0.10",
     "next-auth": "^4.24.13",
     "react": "19.2.0",
     "react-dom": "19.2.0",
