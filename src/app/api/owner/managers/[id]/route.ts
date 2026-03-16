@@ -16,7 +16,7 @@ async function ensureOwner() {
 }
 
 /**
- * ✅ Next.js 16: context.params est une Promise
+ * Next.js 16: context.params est une Promise
  * Donc on typpe context comme: { params: Promise<{ id: string }> }
  */
 export async function PUT(
@@ -28,7 +28,7 @@ export async function PUT(
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  // ✅ On "unwrap" params avec await (obligatoire en Next 16)
+  // On "unwrap" params avec await (obligatoire en Next 16)
   const { id: managerId } = await context.params;
 
   if (!managerId) {
@@ -122,7 +122,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 
-  // ✅ pareil: params est une Promise
+  // pareil: params est une Promise
   const { id: managerId } = await context.params;
 
   if (!managerId) {

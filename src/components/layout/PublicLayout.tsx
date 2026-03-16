@@ -82,7 +82,11 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
               href={isLogged ? "/client/cart" : "/signup"}
               className="flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 transition"
             >
-              <span>🛒</span>
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <circle cx="9" cy="20" r="1" />
+                <circle cx="17" cy="20" r="1" />
+                <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 7H7" />
+              </svg>
               <span className="hidden sm:inline">Panier</span>
               {cartCount > 0 && (
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
@@ -97,7 +101,10 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                 href={dashboardHref}
                 className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-sm"
               >
-                <span className="hidden sm:inline">👤</span>
+                <svg className="hidden h-4 w-4 sm:inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20a8 8 0 0 1 16 0" />
+                </svg>
                 <span className="hidden sm:inline">Mon espace</span>
                 <span className="sm:hidden">Espace</span>
               </Link>
@@ -106,7 +113,11 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                 href="/login"
                 className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-sm"
               >
-                <span>🔑</span>
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                  <circle cx="7.5" cy="15.5" r="3.5" />
+                  <path d="M11 15.5h10" />
+                  <path d="M18 12.5v6" />
+                </svg>
                 <span className="hidden sm:inline">Se connecter</span>
                 <span className="sm:hidden">Login</span>
               </Link>
@@ -125,7 +136,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             {/* About */}
             <div className="space-y-2">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">🥖</span>
+                <span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" />
                 <h3 className="text-sm font-semibold text-slate-900">Blé Dor</h3>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
@@ -153,10 +164,10 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-slate-900 mb-3">Contact</h3>
               <div className="space-y-1 text-xs text-slate-600">
-                <p>📍 123 Rue du Pain, 75000</p>
-                <p>📞 01 23 45 67 89</p>
-                <p>📧 contact@bledor.fr</p>
-                <p>⏰ Lun-Sam: 7h - 19h30</p>
+                <p>123 Rue du Pain, 75000</p>
+                <p>01 23 45 67 89</p>
+                <p>contact@bledor.fr</p>
+                <p>Lun-Sam: 7h - 19h30</p>
               </div>
             </div>
           </div>

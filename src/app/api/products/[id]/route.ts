@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// ✅ PUT /api/products/:id → mise à jour complète (edit)
+// PUT /api/products/:id → mise à jour complète (edit)
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -46,7 +46,7 @@ export async function PUT(
   }
 }
 
-// ✅ PATCH /api/products/:id → mise à jour de la dispo uniquement
+// PATCH /api/products/:id → mise à jour de la dispo uniquement
 export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -84,7 +84,7 @@ export async function PATCH(
   }
 }
 
-// ✅ DELETE /api/products/:id → suppression
+// DELETE /api/products/:id → suppression
 export async function DELETE(
   _req: NextRequest,
   context: { params: Promise<{ id: string }> }

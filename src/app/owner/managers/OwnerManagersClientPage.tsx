@@ -72,8 +72,8 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
 
       const url =
         mode === "create"
-          ? "/api/owner/manager"
-          : `/api/owner/manager/${editingId}`;
+          ? "/api/owner/managers"
+          : `/api/owner/managers/${editingId}`;
 
       const method = mode === "create" ? "POST" : "PUT";
 
@@ -165,7 +165,14 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
       {/* Header */}
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-lg">👥</div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100">
+            <svg className="h-6 w-6 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </div>
           <div>
             <h1 className="text-2xl font-semibold text-slate-900">Gestion des managers</h1>
             <p className="mt-1 text-sm text-slate-600">Crée, modifie ou supprime les comptes gérants de Blé Dor.</p>
@@ -176,17 +183,17 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
       {/* Messages système */}
       {loading && (
         <div className="rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-700 flex items-center gap-2">
-          <span>⏳</span> Traitement en cours...
+          <span className="inline-block h-2 w-2 rounded-full bg-blue-500" /> Traitement en cours...
         </div>
       )}
       {errorMessage && (
         <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700 flex items-center gap-2">
-          <span>❌</span> {errorMessage}
+          <span className="inline-block h-2 w-2 rounded-full bg-red-500" /> {errorMessage}
         </div>
       )}
       {successMessage && (
         <div className="rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-700 flex items-center gap-2">
-          <span>✅</span> {successMessage}
+          <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" /> {successMessage}
         </div>
       )}
 
@@ -195,7 +202,6 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
         <div className="mb-4 flex items-center justify-between">
           <div>
             <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
-              <span>{mode === "create" ? "➕" : "✏️"}</span>
               {mode === "create" ? "Ajouter un nouveau manager" : "Modifier un manager"}
             </h2>
             <p className="mt-1 text-xs text-slate-500">Les managers auront accès à l'espace gérant (dashboard, commandes, produits).</p>
@@ -213,7 +219,7 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
 
         <form onSubmit={handleSubmit} className="grid gap-4 text-sm sm:grid-cols-2">
           <div>
-            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">👤 Nom</label>
+            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">Nom</label>
             <input
               type="text"
               value={form.name}
@@ -224,7 +230,7 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">📧 Email</label>
+            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">Email</label>
             <input
               type="email"
               value={form.email}
@@ -236,7 +242,7 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">📱 Téléphone</label>
+            <label className="text-xs font-medium text-slate-600 flex items-center gap-1">Téléphone</label>
             <input
               type="tel"
               value={form.phone}
@@ -248,7 +254,7 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
 
           <div>
             <label className="text-xs font-medium text-slate-600 flex items-center gap-1">
-              🔐 Mot de passe
+              Mot de passe
               {mode === "edit" && <span className="text-[10px] text-slate-400">(optionnel)</span>}
             </label>
             <input
@@ -267,7 +273,7 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
               disabled={loading}
               className="rounded-lg bg-amber-500 hover:bg-amber-600 px-5 py-2 text-sm font-semibold text-white transition disabled:opacity-60"
             >
-              {mode === "create" ? "✔️ Créer le manager" : "💾 Enregistrer"}
+              {mode === "create" ? "Créer le manager" : "Enregistrer"}
             </button>
           </div>
         </form>
@@ -275,23 +281,23 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
 
       {/* Liste des managers */}
       <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-        <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">📋 Liste des managers ({managers.length})</h2>
+        <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">Liste des managers ({managers.length})</h2>
         <p className="mt-1 text-xs text-slate-500">Ces comptes ont accès à l'interface de gestion Blé Dor (dashboard gérant, commandes, produits).</p>
 
         {managers.length === 0 ? (
           <div className="mt-6 rounded-lg bg-slate-50 border border-dashed border-slate-300 px-4 py-6 text-center">
-            <p className="text-sm text-slate-500">📭 Aucun manager pour le moment. Crée ton premier gérant avec le formulaire ci-dessus.</p>
+            <p className="text-sm text-slate-500">Aucun manager pour le moment. Crée ton premier gérant avec le formulaire ci-dessus.</p>
           </div>
         ) : (
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-xs">
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
-                  <th className="px-4 py-3 text-left font-semibold text-slate-700">👤 Nom</th>
-                  <th className="px-4 py-3 text-left font-semibold text-slate-700">📧 Email</th>
-                  <th className="px-4 py-3 text-left font-semibold text-slate-700">📱 Téléphone</th>
-                  <th className="px-4 py-3 text-left font-semibold text-slate-700">📅 Créé le</th>
-                  <th className="px-4 py-3 text-right font-semibold text-slate-700">⚙️ Actions</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Nom</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Email</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Téléphone</th>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-700">Créé le</th>
+                  <th className="px-4 py-3 text-right font-semibold text-slate-700">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -308,14 +314,14 @@ export default function OwnerManagersClientPage({ initialManagers }: Props) {
                           onClick={() => handleEditClick(m)}
                           className="rounded-md border border-slate-200 px-3 py-1.5 text-[11px] font-medium text-slate-700 hover:bg-slate-100 transition"
                         >
-                          ✏️ Modifier
+                          Modifier
                         </button>
                         <button
                           type="button"
                           onClick={() => handleDelete(m.id)}
                           className="rounded-md bg-red-500 hover:bg-red-600 px-3 py-1.5 text-[11px] font-medium text-white transition"
                         >
-                          🗑️ Supprimer
+                          Supprimer
                         </button>
                       </div>
                     </td>

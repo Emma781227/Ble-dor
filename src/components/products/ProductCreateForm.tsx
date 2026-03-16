@@ -50,7 +50,7 @@ export default function ProductCreateForm({
       setPrice("");
       setCategory("pain");
       setDescription("");
-      setSuccess("Produit créé avec succès ✅");
+      setSuccess("Produit créé avec succès.");
 
       if (onProductCreated) onProductCreated();
     } catch (err: any) {
@@ -66,7 +66,7 @@ export default function ProductCreateForm({
        className="mb-6 rounded-2xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-sm ring-1 ring-slate-100"
     >
        <div className="flex items-center gap-2 mb-4">
-         <span className="text-2xl">🥖</span>
+         <span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" />
          <h2 className="text-sm font-semibold text-slate-900">
            Ajouter un produit
          </h2>
@@ -75,7 +75,6 @@ export default function ProductCreateForm({
       <div className="grid gap-4 md:grid-cols-2">
         <div>
            <label className="flex items-center gap-1 text-xs font-semibold text-slate-700 mb-2">
-             <span>📝</span>
             Nom du produit
           </label>
           <input
@@ -90,7 +89,6 @@ export default function ProductCreateForm({
 
         <div>
            <label className="flex items-center gap-1 text-xs font-semibold text-slate-700 mb-2">
-             <span>💰</span>
             Prix (FCFA)
           </label>
           <input
@@ -105,7 +103,6 @@ export default function ProductCreateForm({
 
         <div>
            <label className="flex items-center gap-1 text-xs font-semibold text-slate-700 mb-2">
-             <span>📂</span>
             Catégorie
           </label>
           <select
@@ -113,16 +110,15 @@ export default function ProductCreateForm({
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-              <option value="pain">🥖 Pain</option>
-              <option value="viennoiserie">🥐 Viennoiserie</option>
-              <option value="boisson">☕ Boisson</option>
-              <option value="snack">🥪 Snack</option>
+              <option value="pain">Pain</option>
+              <option value="viennoiserie">Viennoiserie</option>
+              <option value="boisson">Boisson</option>
+              <option value="snack">Snack</option>
           </select>
         </div>
 
          <div>
            <label className="flex items-center gap-1 text-xs font-semibold text-slate-700 mb-2">
-             <span>✍️</span>
             Description (optionnelle)
           </label>
           <textarea
@@ -138,7 +134,7 @@ export default function ProductCreateForm({
       {error && (
         <div className="mt-4 rounded-lg bg-red-50 border border-red-200 p-3">
           <p className="flex items-center gap-2 text-xs font-medium text-red-700">
-            <span>❌</span>
+            <span className="inline-block h-2 w-2 rounded-full bg-red-500" />
           {error}
         </p>
         </div>
@@ -146,7 +142,7 @@ export default function ProductCreateForm({
       {success && (
         <div className="mt-4 rounded-lg bg-emerald-50 border border-emerald-200 p-3">
           <p className="flex items-center gap-2 text-xs font-medium text-emerald-700">
-            <span>✅</span>
+            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
           {success}
         </p>
         </div>
@@ -158,7 +154,6 @@ export default function ProductCreateForm({
           disabled={loading}
            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:shadow-lg hover:from-amber-600 hover:to-amber-700 disabled:cursor-not-allowed disabled:opacity-60 transition"
         >
-           <span>{loading ? "⏳" : "💾"}</span>
           {loading ? "Enregistrement..." : "Enregistrer"}
         </button>
       </div>

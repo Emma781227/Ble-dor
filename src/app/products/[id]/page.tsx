@@ -12,7 +12,7 @@ type PageProps = {
 };
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  const { id } = await params; // ✅ on "unwrap" la Promise ici
+  const { id } = await params; // on "unwrap" la Promise ici
 
   if (!id) {
     notFound();

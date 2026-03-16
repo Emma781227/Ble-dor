@@ -181,7 +181,7 @@ export default function ManagerOrdersPage({
       {/* Summary pills */}
       <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex items-center rounded-2xl bg-blue-50 p-4">
-          <span className="text-2xl mr-3">🧾</span>
+          <span className="mr-3 inline-block h-2.5 w-2.5 rounded-full bg-blue-500" />
           <div>
             <p className="text-xs text-slate-500">Total commandes</p>
             <p className="text-xl font-semibold text-slate-900">
@@ -190,7 +190,7 @@ export default function ManagerOrdersPage({
           </div>
         </div>
         <div className="flex items-center rounded-2xl bg-amber-50 p-4">
-          <span className="text-2xl mr-3">💰</span>
+          <span className="mr-3 inline-block h-2.5 w-2.5 rounded-full bg-amber-500" />
           <div>
             <p className="text-xs text-slate-500">Revenu total</p>
             <p className="text-xl font-semibold text-slate-900">

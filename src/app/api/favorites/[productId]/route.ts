@@ -14,7 +14,7 @@ export async function DELETE(
 
   const user = session.user as any;
 
-  // ✅ En Next.js 16, params est une Promise
+  // En Next.js 16, params est une Promise
   const { productId } = await context.params;
 
   if (!productId) {

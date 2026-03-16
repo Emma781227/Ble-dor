@@ -62,7 +62,7 @@ export default function ProductsManagementPage({
     }
   };
 
-  // 🗑️ Suppression d'un produit
+  // Suppression d'un produit
   const handleDeleteProduct = async (productId: string) => {
     const confirmed = window.confirm(
       "Es-tu sûr de vouloir supprimer ce produit ?"

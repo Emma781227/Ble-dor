@@ -10,7 +10,11 @@ async function main() {
 
   const owner = await prisma.user.upsert({
     where: { email: "owner@bledor.local" },
-    update: {},
+    update: {
+      name: "Propriétaire",
+      passwordHash: passwordOwner,
+      role: "OWNER",
+    },
     create: {
       name: "Propriétaire",
       email: "owner@bledor.local",
@@ -21,7 +25,11 @@ async function main() {
 
   const manager = await prisma.user.upsert({
     where: { email: "manager@bledor.local" },
-    update: {},
+    update: {
+      name: "Gérant",
+      passwordHash: passwordManager,
+      role: "MANAGER",
+    },
     create: {
       name: "Gérant",
       email: "manager@bledor.local",
@@ -32,7 +40,11 @@ async function main() {
 
   const client = await prisma.user.upsert({
     where: { email: "client@bledor.local" },
-    update: {},
+    update: {
+      name: "Client",
+      passwordHash: passwordClient,
+      role: "CLIENT",
+    },
     create: {
       name: "Client",
       email: "client@bledor.local",

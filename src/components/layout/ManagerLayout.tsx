@@ -48,19 +48,16 @@ export default function ManagerLayout({
           <nav className="mt-8 space-y-1">
             <NavLink
               label="Dashboard"
-              icon="📋"
               href="/manager/dashboard"
               pathname={pathname}
             />
             <NavLink
               label="Commandes"
-              icon="🛱"
               href="/manager/orders"
               pathname={pathname}
             />
             <NavLink
               label="Produits"
-              icon="🎜"
               href="/manager/products"
               pathname={pathname}
             />
@@ -69,7 +66,7 @@ export default function ManagerLayout({
 
         <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3 space-y-2 text-xs">
           <div className="flex items-center gap-2">
-            <span className="text-lg">👤</span>
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-slate-400" />
             <div>
               <p className="font-semibold text-slate-900">{displayName}</p>
               <p className="text-slate-500">
@@ -88,12 +85,10 @@ export default function ManagerLayout({
 
 function NavLink({
   label,
-  icon,
   href,
   pathname,
 }: {
   label: string;
-  icon: string;
   href: string;
   pathname: string | null;
 }) {
@@ -107,7 +102,7 @@ function NavLink({
           : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
       }`}
     >
-      <span className="text-lg">{icon}</span>
+      <span className="inline-block h-2.5 w-2.5 rounded-full bg-current opacity-70" />
       {label}
     </Link>
   );

@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 🔐 On récupère la session pour savoir qui valide la commande
+    // On récupère la session pour savoir qui valide la commande
     const session = await getServerSession(authOptions);
     let managerId: string | undefined = undefined;
 

@@ -17,7 +17,7 @@ export default function HomePage() {
           <div className="flex-1">
             <div className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-emerald-100 to-emerald-50 px-4 py-1.5 text-[11px] font-semibold text-emerald-900 ring-1 ring-emerald-200 shadow-sm">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>🔑 Ouvert dès 7h · Commande en ligne disponible</span>
+              <span>Ouvert dès 7h · Commande en ligne disponible</span>
             </div>
 
             <h1 className="mt-5 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
@@ -39,14 +39,14 @@ export default function HomePage() {
                 href="/products"
                 className="flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-md hover:bg-slate-800 hover:shadow-lg transition active:scale-95"
               >
-                <span>🛒</span>
+                <span className="inline-block h-2.5 w-2.5 rounded-full bg-white/90" />
                 Commander maintenant
               </Link>
               <Link
                 href="/login"
                 className="flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-400 transition"
               >
-                <span>👤</span>
+                <span className="inline-block h-2.5 w-2.5 rounded-full bg-slate-500" />
                 Accéder à mon espace
               </Link>
             </div>
@@ -113,11 +113,9 @@ export default function HomePage() {
       {/* COMMENT ÇA MARCHE */}
       <section className="mx-auto max-w-7xl px-4 pb-12 pt-10 sm:px-6">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <span className="text-3xl">🚀</span>
           <h2 className="text-center text-sm font-semibold uppercase tracking-[0.18em] text-slate-600">
             Commander chez Blé Dor
           </h2>
-          <span className="text-3xl">🚀</span>
         </div>
         <p className="mt-2 text-center text-sm text-slate-600 max-w-xl mx-auto">
           En quelques étapes, votre commande est prête à être récupérée en
@@ -128,21 +126,18 @@ export default function HomePage() {
         <div className="mt-8 grid gap-4 sm:grid-cols-3 text-sm">
           <StepCard
             step="1"
-            icon="👀"
             title="Je choisis"
             text="Je parcours les produits disponibles en temps réel et j'ajoute à mon panier ce qui me fait envie."
             color="from-blue-50 to-blue-100"
           />
           <StepCard
             step="2"
-            icon="✅"
             title="Je confirme"
             text="Je valide ma commande en ligne et je reçois un numéro de ticket à présenter en boutique."
             color="from-amber-50 to-amber-100"
           />
           <StepCard
             step="3"
-            icon="🎉"
             title="Je récupère"
             text="Je passe en caisse, je règle et je repars avec mes produits fraîchement préparés."
             color="from-green-50 to-green-100"
@@ -153,11 +148,9 @@ export default function HomePage() {
       {/* CATÉGORIES */}
       <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6">
         <div className="inline-flex items-center gap-2 mx-auto w-full justify-center mb-4">
-          <span className="text-3xl">🎯</span>
           <h2 className="text-center text-2xl font-bold text-slate-900">
             Nos univers gourmands
           </h2>
-          <span className="text-3xl">✨</span>
         </div>
         <p className="mt-2 text-center text-sm text-slate-500">
           Une sélection claire pour trouver rapidement votre prochain coup de cœur.
@@ -218,11 +211,9 @@ export default function HomePage() {
       <section className="bg-gradient-to-b from-slate-50 to-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
           <div className="inline-flex items-center gap-2 mx-auto w-full justify-center mb-4">
-            <span className="text-3xl">❤️</span>
             <h2 className="text-center text-2xl font-bold text-slate-900">
               Pourquoi choisir Blé Dor ?
             </h2>
-            <span className="text-3xl">⭐</span>
           </div>
           <p className="mt-2 text-center text-sm text-slate-500 max-w-xl mx-auto">
             Une expérience pensée à la fois pour vos habitudes de consommation
@@ -231,19 +222,16 @@ export default function HomePage() {
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <WhyCard
-              icon="🥖"
               title="Pain artisanal, cuisson sur place"
               text="Des recettes maîtrisées, une cuisson quotidienne en boutique et une qualité constante tout au long de la journée."
               color="from-orange-50 to-amber-50"
             />
             <WhyCard
-              icon="📲"
               title="Commande en ligne simplifiée"
               text="Une interface claire pour commander en amont, visualiser les disponibilités et limiter l'attente en caisse."
               color="from-blue-50 to-cyan-50"
             />
             <WhyCard
-              icon="⚡"
               title="Service fluide en point de vente"
               text="Un outil interne de suivi pour les équipes : moins d'erreurs, plus de réactivité, un service plus agréable."
               color="from-emerald-50 to-green-50"
@@ -258,11 +246,9 @@ export default function HomePage() {
         className="mx-auto max-w-7xl px-4 pb-16 sm:px-6"
       >
         <div className="inline-flex items-center gap-2 mx-auto w-full justify-center mb-4">
-          <span className="text-3xl">📞</span>
           <h2 className="text-center text-2xl font-bold text-slate-900">
             Nous contacter
           </h2>
-          <span className="text-3xl">💬</span>
         </div>
         <p className="mt-2 text-center text-sm text-slate-500 max-w-md mx-auto">
           Une question, une commande spéciale (gâteau, événement, grosse
@@ -275,25 +261,21 @@ export default function HomePage() {
             <ContactInfo
               label="Adresse"
               value="123 Rue du Pain, 75000 Paris"
-              icon="📍"
             />
             <div className="border-t border-slate-200" />
             <ContactInfo
               label="Téléphone"
               value="01 23 45 67 89"
-              icon="📞"
             />
             <div className="border-t border-slate-200" />
             <ContactInfo
               label="Email"
               value="contact@bledor.fr"
-              icon="📧"
             />
             <div className="border-t border-slate-200" />
             <ContactInfo
               label="Horaires"
               value="Lun - Sam : 7h00 - 19h30 · Dim : 7h00 - 13h00"
-              icon="⏰"
             />
             <p className="text-[11px] text-slate-600 italic pt-2">
               Pour toute demande spécifique, envoyez-nous un message et nous
@@ -304,7 +286,7 @@ export default function HomePage() {
           {/* Formulaire (visuel seulement pour l'instant) */}
           <div className="rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 p-6 shadow-sm ring-1 ring-slate-200">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-2xl">📋</span>
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-slate-500" />
               <p className="text-sm font-semibold text-slate-900">Formulaire de contact</p>
             </div>
             <p className="mt-2 text-[11px] text-slate-600">
@@ -331,7 +313,6 @@ export default function HomePage() {
                 type="button"
                 className="w-full flex items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition active:scale-95"
               >
-                <span>📄</span>
                 Envoyer (bientôt disponible)
               </button>
             </div>
@@ -370,13 +351,11 @@ function MiniStat({
 
 function StepCard({
   step,
-  icon,
   title,
   text,
   color,
 }: {
   step: string;
-  icon: string;
   title: string;
   text: string;
   color: string;
@@ -387,7 +366,7 @@ function StepCard({
         <div className="absolute -top-3 left-4 flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-[11px] font-semibold text-white shadow-sm">
           {step}
         </div>
-        <span className="text-2xl">{icon}</span>
+        <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-slate-500" />
       </div>
       <p className="mt-3 text-sm font-semibold text-slate-900">{title}</p>
       <p className="mt-2 text-xs text-slate-600">{text}</p>
@@ -396,12 +375,10 @@ function StepCard({
 }
 
 function WhyCard({
-  icon,
   title,
   text,
   color,
 }: {
-  icon: string;
   title: string;
   text: string;
   color: string;
@@ -409,7 +386,7 @@ function WhyCard({
   return (
     <article className={`rounded-2xl bg-gradient-to-br ${color} p-4 shadow-sm ring-1 ring-slate-200 hover:shadow-md transition hover:-translate-y-1`}>
       <div className="flex items-start gap-2">
-        <span className="text-2xl">{icon}</span>
+        <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-slate-500" />
         <p className="text-sm font-semibold text-slate-900">{title}</p>
       </div>
       <p className="mt-2 text-xs text-slate-600">{text}</p>
@@ -420,15 +397,13 @@ function WhyCard({
 function ContactInfo({
   label,
   value,
-  icon,
 }: {
   label: string;
   value: string;
-  icon: string;
 }) {
   return (
     <div className="flex items-start gap-3 text-xs">
-      <div className="text-2xl mt-0.5">{icon}</div>
+      <div className="mt-1 h-2.5 w-2.5 rounded-full bg-slate-500" />
       <div>
         <p className="font-semibold text-slate-800">{label}</p>
         <p className="mt-0.5 text-slate-600">{value}</p>

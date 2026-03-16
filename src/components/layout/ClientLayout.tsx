@@ -17,10 +17,10 @@ export default function ClientLayout({ children, currentUser }: ClientLayoutProp
   const pathname = usePathname();
 
   const navItems = [
-    { label: "Tableau de bord", href: "/client/dashboard", icon: "\ud83d\udccb" },
-    { label: "Mes commandes", href: "/client/orders", icon: "\ud83d\udef1" },
-    { label: "Mon panier", href: "/client/cart", icon: "\ud83d\uded2" },
-    { label: "Mon profil", href: "/client/profile", icon: "\ud83d\udc64" },
+    { label: "Tableau de bord", href: "/client/dashboard" },
+    { label: "Mes commandes", href: "/client/orders" },
+    { label: "Mon panier", href: "/client/cart" },
+    { label: "Mon profil", href: "/client/profile" },
   ];
 
   return (
@@ -34,7 +34,7 @@ export default function ClientLayout({ children, currentUser }: ClientLayoutProp
             <span className="text-sm font-semibold text-slate-900">Blé Dor</span>
           </Link>
           <div className="flex items-center gap-2 text-xs text-slate-700 font-medium">
-            <span>👤</span>
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-slate-400" />
             <span>{currentUser.name || currentUser.email}</span>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function ClientLayout({ children, currentUser }: ClientLayoutProp
                     : "text-slate-700 hover:bg-slate-100"
                 }`}
               >
-                <span>{item.icon}</span>
+                <span className="inline-block h-2 w-2 rounded-full bg-current opacity-70" />
                 {item.label}
               </Link>
             );

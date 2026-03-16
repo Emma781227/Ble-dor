@@ -16,10 +16,10 @@ export default function OwnerLayout({
   const pathname = usePathname();
 
   const navItems = [
-    { label: "Dashboard", href: "/owner/dashboard", icon: "📊" },
-    { label: "Managers", href: "/owner/managers", icon: "👨" },
-    { label: "Commandes", href: "/owner/orders", icon: "🛒" },
-    { label: "Produits", href: "/owner/products", icon: "🥖" },
+    { label: "Dashboard", href: "/owner/dashboard" },
+    { label: "Managers", href: "/owner/managers" },
+    { label: "Commandes", href: "/owner/orders" },
+    { label: "Produits", href: "/owner/products" },
   ];
 
   return (
@@ -51,7 +51,7 @@ export default function OwnerLayout({
                     : "text-slate-400 hover:bg-slate-800 hover:text-white"
                 }`}
               >
-                <span className="text-lg">{item.icon}</span>
+                <span className="inline-block h-2.5 w-2.5 rounded-full bg-current opacity-70" />
                 {item.label}
               </Link>
             );
@@ -60,7 +60,7 @@ export default function OwnerLayout({
 
         {/* FOOTER SIDEBAR */}
         <div className="border-t border-slate-800 px-4 py-4">
-          <p className="text-xs text-slate-400 font-medium mb-1">👤 Connecté en tant que</p>
+          <p className="text-xs text-slate-400 font-medium mb-1">Connecté en tant que</p>
           <p className="text-sm font-semibold text-white truncate bg-slate-800/50 rounded px-2 py-1.5">
             {currentUserName}
           </p>

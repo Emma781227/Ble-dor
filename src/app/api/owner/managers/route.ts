@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
       password?: string;
     } = body;
 
-    // ✅ Validation basique
+    // Validation basique
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email et mot de passe sont requis." },

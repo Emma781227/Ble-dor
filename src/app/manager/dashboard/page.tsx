@@ -137,28 +137,24 @@ export default async function ManagerDashboardPage() {
         <StatCard
           title="Commandes du jour"
           value={stats.totalOrders}
-          icon="🛒"
           color="bg-blue-50"
           subtitle="Toutes commandes confondues"
         />
         <StatCard
           title="En préparation"
           value={stats.preparationCount}
-          icon="🥖"
           color="bg-amber-50"
           subtitle="Actuellement en cours"
         />
         <StatCard
           title="Prêtes"
           value={stats.readyCount}
-          icon="✅"
           color="bg-green-50"
           subtitle="En attente de retrait"
         />
         <StatCard
           title="Livrées"
           value={stats.deliveredCount}
-          icon="🚚"
           color="bg-emerald-50"
           subtitle="Terminées aujourd'hui"
         />
@@ -178,21 +174,21 @@ export default async function ManagerDashboardPage() {
           <div className="mt-4 grid gap-3 text-sm text-slate-700 sm:grid-cols-2 md:grid-cols-3">
             <div className="rounded-xl bg-slate-50 p-3 flex items-center justify-between">
               <p className="text-xs text-slate-500">Commandes en attente</p>
-              <span className="text-xl">⏳</span>
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-slate-400" />
               <p className="mt-1 text-base font-semibold">
                 {stats.pendingCount}
               </p>
             </div>
             <div className="rounded-xl bg-amber-50 p-3 flex items-center justify-between">
               <p className="text-xs text-slate-500">Total encaissé (jour)</p>
-              <span className="text-xl">💰</span>
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-500" />
               <p className="mt-1 text-base font-semibold">
                 {stats.totalAmount.toFixed(2)} FCFA
               </p>
             </div>
             <div className="rounded-xl bg-indigo-50 p-3 flex items-center justify-between">
               <p className="text-xs text-slate-500">Produits au catalogue</p>
-              <span className="text-xl">📦</span>
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-indigo-500" />
               <p className="mt-1 text-base font-semibold">
                 {productsStats.totalProducts}
               </p>

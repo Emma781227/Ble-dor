@@ -25,7 +25,7 @@ export default function SuccessContent({ ticket }: { ticket: string | null }) {
 
       {/* Titre */}
       <h1 className="text-2xl font-semibold text-slate-900">
-        Votre commande a été enregistrée 🎉
+        Votre commande a été enregistrée
       </h1>
 
       <p className="mt-2 text-sm text-slate-600 max-w-md">
