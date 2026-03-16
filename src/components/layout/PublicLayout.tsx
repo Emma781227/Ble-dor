@@ -27,7 +27,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   const navItems = [
     { label: "Accueil", href: "/" },
     { label: "Produits", href: "/products" },
-    { label: "Contact", href: "#contact" },
+    { label: "Contact", href: "/#contact" },
     { label: "Login", href: "/login" },
   ];
 
@@ -56,6 +56,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             {navItems.map((item) => {
               const isActive =
                 item.href === "/"
+                  ? pathname === "/"
+                  : item.href === "/#contact"
                   ? pathname === "/"
                   : pathname.startsWith(item.href);
 
@@ -154,7 +156,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                 <Link href="/products" className="text-slate-600 hover:text-slate-900 transition block">
                   Produits
                 </Link>
-                <Link href="#contact" className="text-slate-600 hover:text-slate-900 transition block">
+                <Link href="/#contact" className="text-slate-600 hover:text-slate-900 transition block">
                   Nous contacter
                 </Link>
               </div>
