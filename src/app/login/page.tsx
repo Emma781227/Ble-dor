@@ -3,6 +3,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import PublicLayout from "@/components/layout/PublicLayout";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -56,8 +58,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+    <PublicLayout>
+      <div className="flex items-center justify-center px-4 py-10">
+        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
         <h1 className="text-lg font-semibold text-slate-900">
           Connexion
         </h1>
@@ -103,12 +106,12 @@ export default function LoginPage() {
               <span>Se souvenir de moi</span>
             </label>
 
-            <a
-              href="#"
+            <Link
+              href="/forgot-password"
               className="text-xs text-slate-500 hover:text-slate-800"
             >
               Mot de passe oublié
-            </a>
+            </Link>
           </div>
 
           {error && (
@@ -126,14 +129,15 @@ export default function LoginPage() {
 
         <p className="mt-4 text-center text-xs text-slate-500">
           Pas encore de compte ?{" "}
-          <a
+          <Link
             href="/signup"
             className="font-semibold text-slate-900 hover:underline"
           >
             Créer un compte
-          </a>
+          </Link>
         </p>
+        </div>
       </div>
-    </div>
+    </PublicLayout>
   );
 }

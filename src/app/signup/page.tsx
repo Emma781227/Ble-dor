@@ -4,6 +4,7 @@ import { FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import PublicLayout from "@/components/layout/PublicLayout";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -87,8 +88,9 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+    <PublicLayout>
+      <div className="flex items-center justify-center px-4 py-10">
+        <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
         <h1 className="text-lg font-semibold text-slate-900">
           Créer un compte
         </h1>
@@ -182,7 +184,8 @@ export default function SignupPage() {
             Se connecter
           </Link>
         </p>
+        </div>
       </div>
-    </div>
+    </PublicLayout>
   );
 }
