@@ -34,3 +34,30 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Docker
+
+Le projet est dockerise avec:
+
+- `node:22-alpine` pour l'application Next.js (version stable recente)
+- `postgres:17-alpine` pour la base de donnees
+
+### Demarrage
+
+```bash
+docker compose up --build
+```
+
+L'application est disponible sur `http://localhost:3000`.
+
+### Arret
+
+```bash
+docker compose down
+```
+
+### Arret + suppression des donnees locales Postgres
+
+```bash
+docker compose down -v
+```

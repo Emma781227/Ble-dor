@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.next
+.git
+.github
+.vscode
+dist
+coverage
+*.local
+.env
+.env.*
+mobile/node_modules
