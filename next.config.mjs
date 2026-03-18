@@ -1,3 +1,8 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const nextConfig = {
   // Enable React compiler
   reactCompiler: true,
@@ -5,7 +10,7 @@ const nextConfig = {
   // Use turbopack (Next.js 16 default) with minimal config
   // Ensure turbopack uses this workspace root (helps when multiple lockfiles exist)
   turbopack: {
-    root: './',
+    root: __dirname,
   },
 
   // prevent Next from attempting to bundle the Expo/mobile app
