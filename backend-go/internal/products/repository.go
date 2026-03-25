@@ -2,9 +2,13 @@ package products
 
 import (
 	"context"
+	"errors"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+var ErrProductNotFound = errors.New("product not found")
 
 type Product struct {
 	ID          string  `json:"id"`
@@ -58,4 +62,30 @@ func (r *Repository) ListAvailable(ctx context.Context) ([]Product, error) {
 	}
 
 	return products, nil
+}
+
+func (r *Repository) GetAvailableByID(ctx context.Context, id string) (*Product, error) {
+	var p Product
+	err := r.pool.QueryRow(ctx, `
+		SELECT id, name, price, category, description, "imageUrl", "isAvailable"
+		FROM "Product"
+		WHERE id = $1 AND "isAvailable" = true
+		LIMIT 1
+	`, id).Scan(
+		&p.ID,
+		&p.Name,
+		&p.Price,
+		&p.Category,
+		&p.Description,
+		&p.ImageURL,
+		&p.IsAvailable,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, ErrProductNotFound
+		}
+		return nil, err
+	}
+
+	return &p, nil
 }

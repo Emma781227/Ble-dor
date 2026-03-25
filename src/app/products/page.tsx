@@ -16,7 +16,52 @@ type Product = {
   isAvailable: boolean;
 };
 
+function resolveBackendApiBaseUrl(): string | null {
+  if (process.env.BACKEND_API_URL) {
+    return process.env.BACKEND_API_URL;
+  }
+
+  // Useful default for local progressive migration to backend-go.
+  if (process.env.NODE_ENV !== "production") {
+    return "http://localhost:8080";
+  }
+
+  return null;
+}
+
+async function getAvailableProductsFromGoApi(baseUrl: string): Promise<Product[] | null> {
+  const normalizedBaseUrl = baseUrl.replace(/\/$/, "");
+  const res = await fetch(`${normalizedBaseUrl}/v1/products`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error(`go-api responded with ${res.status}`);
+  }
+
+  const payload = (await res.json()) as { items?: Product[] };
+  if (!Array.isArray(payload.items)) {
+    return null;
+  }
+
+  return payload.items;
+}
+
 async function getAvailableProducts(): Promise<Product[]> {
+  const goApiBaseUrl = resolveBackendApiBaseUrl();
+
+  if (goApiBaseUrl) {
+    try {
+      const goProducts = await getAvailableProductsFromGoApi(goApiBaseUrl);
+      if (goProducts) {
+        return goProducts.filter((product) => product.isAvailable);
+      }
+    } catch (error) {
+      // Keep storefront available even if backend-go is down.
+      console.warn("Fallback to Prisma for products page:", error);
+    }
+  }
+
   const products = await prisma.product.findMany({
     where: {
       isAvailable: true,

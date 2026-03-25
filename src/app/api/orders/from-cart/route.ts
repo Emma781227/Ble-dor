@@ -1,6 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthSession } from "@/lib/authSession";
 import { prisma } from "@/lib/prisma";
+import { createBackendJwt } from "@/lib/backendAuth";
+
+function resolveBackendApiBaseUrl(): string | null {
+  if (process.env.BACKEND_API_URL) {
+    return process.env.BACKEND_API_URL;
+  }
+
+  if (process.env.NODE_ENV !== "production") {
+    return "http://localhost:8080";
+  }
+
+  return null;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,6 +27,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user = session.user as any;
+    const bearer = createBackendJwt(user);
 
     if (user.role !== "CLIENT") {
       return NextResponse.json(
@@ -41,6 +55,41 @@ export async function POST(req: NextRequest) {
         { error: "Nom client requis." },
         { status: 400 }
       );
+    }
+
+    const goApiBaseUrl = resolveBackendApiBaseUrl();
+    if (goApiBaseUrl) {
+      try {
+        const res = await fetch(`${goApiBaseUrl.replace(/\/$/, "")}/v1/orders/from-cart`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearer}`,
+            "X-User-Id": user.id,
+            "X-User-Role": user.role,
+          },
+          body: JSON.stringify({
+            items,
+            customerName,
+            customerNote,
+          }),
+          cache: "no-store",
+        });
+
+        if (res.ok) {
+          const payload = await res.json();
+          return NextResponse.json(
+            {
+              success: true,
+              orderId: payload?.id,
+              ticketNumber: payload?.ticketNumber || null,
+            },
+            { status: 201 }
+          );
+        }
+      } catch (error) {
+        console.warn("Fallback to Prisma for from-cart order creation:", error);
+      }
     }
 
     const productIds = items.map((i) => i.productId);

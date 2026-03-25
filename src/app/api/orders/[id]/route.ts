@@ -1,5 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getAuthSession } from "@/lib/authSession";
+import { createBackendJwt } from "@/lib/backendAuth";
+
+function resolveBackendApiBaseUrl(): string | null {
+  if (process.env.BACKEND_API_URL) {
+    return process.env.BACKEND_API_URL;
+  }
+
+  if (process.env.NODE_ENV !== "production") {
+    return "http://localhost:8080";
+  }
+
+  return null;
+}
 
 // PATCH /api/orders/:id → changer le statut
 export async function PATCH(
@@ -7,6 +21,15 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getAuthSession();
+
+    if (!session || !session.user) {
+      return NextResponse.json({ message: "Non authentifié" }, { status: 401 });
+    }
+
+    const user = session.user as any;
+    const bearer = createBackendJwt(user);
+
     const { id } = await context.params;
     const body = await req.json();
     const { status } = body;
@@ -24,6 +47,33 @@ export async function PATCH(
         { message: "Statut invalide." },
         { status: 400 }
       );
+    }
+
+    const goApiBaseUrl = resolveBackendApiBaseUrl();
+    if (goApiBaseUrl) {
+      try {
+        const res = await fetch(
+          `${goApiBaseUrl.replace(/\/$/, "")}/v1/orders/${encodeURIComponent(id)}/status`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${bearer}`,
+              "X-User-Id": user.id,
+              "X-User-Role": user.role,
+            },
+            body: JSON.stringify({ status }),
+            cache: "no-store",
+          }
+        );
+
+        if (res.ok) {
+          const payload = await res.json();
+          return NextResponse.json(payload, { status: 200 });
+        }
+      } catch (error) {
+        console.warn("Fallback to Prisma for order status update:", error);
+      }
     }
 
     const updated = await prisma.order.update({
